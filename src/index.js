@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./css/index.css";
 import App from "./pages/App";
-//import CreateNotification from "./CreateNotification";
 import reportWebVitals from "./reportWebVitals";
+import 'semantic-ui-css/semantic.min.css'
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
