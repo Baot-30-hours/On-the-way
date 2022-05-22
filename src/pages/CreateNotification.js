@@ -1,43 +1,58 @@
-//import logo from "./logo.svg";
-import "../css/CreateNotification.css";
-import React from "react";
+import React, { Component } from 'react'
+import { Form } from 'semantic-ui-react'
 
-class CreateNotification extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: "" };
+const options = [
+  { key: 'm', text: 'Male', value: 'male' },
+  { key: 'f', text: 'Female', value: 'female' },
+  { key: 'o', text: 'Other', value: 'other' },
+]
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+class FormExampleSubcomponentControl extends Component {
+  state = {}
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    alert("A description was submitted: " + this.state.value);
-    event.preventDefault();
-  }
+  handleChange = (e, { value }) => this.setState({ value })
 
   render() {
+    const { value } = this.state
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Description:
-          <input
-            type="text"
-            value={this.state.value}
+      <Form>
+        <Form.Group widths='equal'>
+          <Form.Input fluid label='First name' placeholder='First name' />
+          <Form.Input fluid label='Last name' placeholder='Last name' />
+          <Form.Select
+            fluid
+            label='Gender'
+            options={options}
+            placeholder='Gender'
+          />
+        </Form.Group>
+        <Form.Group inline>
+          <label>Size</label>
+          <Form.Radio
+            label='Small'
+            value='sm'
+            checked={value === 'sm'}
             onChange={this.handleChange}
           />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    );
+          <Form.Radio
+            label='Medium'
+            value='md'
+            checked={value === 'md'}
+            onChange={this.handleChange}
+          />
+          <Form.Radio
+            label='Large'
+            value='lg'
+            checked={value === 'lg'}
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+        <Form.TextArea label='About' placeholder='Tell us more about you...' />
+        <Form.Checkbox label='I agree to the Terms and Conditions' />
+        <Form.Button>Submit</Form.Button>
+      </Form>
+    )
   }
 }
 
-//const root = ReactDOM.createRoot(document.getElementById("root"));
-//root.render(<CreateNotification />);
-
-export default CreateNotification;
+export default FormExampleSubcomponentControl
