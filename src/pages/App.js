@@ -15,11 +15,5 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-    //<>
-    //<CreateHazard/>
-    //</>
   );
 }
-
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(<App />);

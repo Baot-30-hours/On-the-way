@@ -3,6 +3,7 @@ import { Form } from "semantic-ui-react";
 import { Divider } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
+import '../css/CreateHazard.css';
 
 class FormCreateHazard extends Component {
   state = {};
@@ -12,7 +13,7 @@ class FormCreateHazard extends Component {
   render() {
     const { value } = this.state;
     return (
-      <Form>
+      <Form className='wrapper'>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
           <Form.Select
