@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Layout from "./Layout";
 import CreateHazard from "./CreateHazard";
+import CreateUser from "./Register"
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="createhazard" element={<CreateHazard />} />
+          <Route path="register" element={<CreateUser />} />
         </Route>
       </Routes>
     </BrowserRouter>
