@@ -1,5 +1,27 @@
-.wrapper {
-  max-width: 80vw;
-  width: 80vw;
-  margin: auto;
+/* mobile  */
+@media only screen and (max-width: 375px) {
+  .create-hazard-form {
+    margin: 0 16px;
+  }
 }
+
+/* tablet  */
+@media only screen and (min-width: 768px) {
+  .create-hazard-form {
+    margin: 0 24px;
+  }
+}
+
+/* tablet-large  */
+@media only screen and (min-width: 1024px) {
+  .create-hazard-form {
+    max-width: 1000px !important;
+    margin: 0 auto;
+  }
+}
+
+/* desktop  */
+@media only screen and (min-width: 1280px) {}
+
+/* desktop-large  */
+@media only screen and (min-width: 1440px) {}
