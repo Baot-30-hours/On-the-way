@@ -5,19 +5,21 @@ import "../css/CreateHazard.css";
 
 class BackendTest extends Component {
   state = {
-    response: "",
-    post: "",
-    responseToPost: "",
+    hazardsList: "",
+    username: "",
+    hazardType: "",
+    hazardDescription: "",
+    hazardDetails: "",
   };
 
   componentDidMount() {
     this.callApi()
-      .then((res) => this.setState({ response: res.users }))
+      .then((res) => this.setState({ hazardsList: res.hazards }))
       .catch((err) => console.log(err));
   }
 
   callApi = async () => {
-    const response = await fetch("/api/getusers");
+    const response = await fetch("/api/gethazards");
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
 
@@ -26,48 +28,68 @@ class BackendTest extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("/api/finduser", {
+    const response = await fetch("/api/createhazard", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ post: this.state.post }),
+      body: JSON.stringify({
+        username: this.state.username,
+        type: this.state.hazardType,
+        description: this.state.hazardDescription,
+      }),
     });
     const body = await response.text();
-    var retText = "username not found";
+    var retText = "hazard not created";
     if (body) {
       retText = body;
     }
 
-    this.setState({ responseToPost: retText });
+    this.setState({ hazardDetails: retText });
   };
 
   render() {
     return (
-      <Form className="wrapper" onSubmit={this.handleSubmit}>
+      <Form className="create-hazard-form" onSubmit={this.handleSubmit}>
         <Form.Group widths="equal">
           <p>
-            <strong>Users list:</strong>
+            <strong>Hazards list:</strong>
           </p>
         </Form.Group>
         <Form.Group widths="equal">
-          <p>{this.state.response}</p>
+          <p>{this.state.hazardsList}</p>
         </Form.Group>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
           <Form.Input
             type="text"
-            label="Search username:"
+            label="username:"
             placeholder="type username"
-            value={this.state.post}
-            onChange={(e) => this.setState({ post: e.target.value })}
+            value={this.state.username}
+            onChange={(e) => this.setState({ username: e.target.value })}
+          />
+          <Form.Input
+            type="text"
+            label="hazard type:"
+            placeholder="type"
+            value={this.state.hazardType}
+            onChange={(e) => this.setState({ hazardType: e.target.value })}
+          />
+          <Form.Input
+            type="text"
+            label="hazard description:"
+            placeholder="description"
+            value={this.state.hazardDescription}
+            onChange={(e) =>
+              this.setState({ hazardDescription: e.target.value })
+            }
           />
         </Form.Group>
         <Form.Group widths="equal">
-          <Form.Button type="submit">Search...</Form.Button>
+          <Form.Button type="submit">Create</Form.Button>
         </Form.Group>{" "}
         <Form.Group widths="equal">
-          <p>{this.state.responseToPost}</p>
+          <p>{this.state.hazardDetails}</p>
         </Form.Group>
       </Form>
     );
