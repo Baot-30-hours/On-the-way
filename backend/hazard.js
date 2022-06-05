@@ -9,20 +9,6 @@ var db_name = nconf.get("db_name");
 
 module.exports = async function (app) {
   await app.post("/api/createhazard", (req, res) => {
-    //var params = req.body;
-    //console.log("params: " + params);
-    var username = req.body.username;
-    var description = req.body.description;
-    var type = req.body.type;
-
-    /*     createHazard(
-      {
-        username: username,
-        type: type,
-        description: description,
-      },
-      res
-    ); */
     createHazard(req.body, res);
   });
 
@@ -36,9 +22,7 @@ module.exports = async function (app) {
 };
 
 async function createHazard(newHazard, res) {
-  console.log("username: " + newHazard.username);
-  console.log("type: " + newHazard.type);
-  console.log("description: " + newHazard.description);
+  //console.log("username: " + newHazard.username);
 
   MongoClient.connect(mongodb_url, async function (err, db) {
     if (err) throw err;
@@ -49,7 +33,7 @@ async function createHazard(newHazard, res) {
     console.log(
       `New hazard created with the following id: ${result.insertedId}`
     );
-    res.send({ hazardid: JSON.stringify(result.insertedId) });
+    res.send(result.insertedId);
     db.close();
   });
 }

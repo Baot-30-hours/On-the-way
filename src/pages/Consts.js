@@ -19,12 +19,12 @@ export const RoadblockTypes = [
 
 export const RoadsideTypes = [
   { key: "1", text: "Police", value: "police" },
-  { key: "2", text: "WildAnimal side", value: "wildAnimal" },
+  { key: "2", text: "Wild Animal", value: "wildAnimal" },
 ];
 
 export const LostAndFoundsTypes = [
   { key: "1", text: "Jewel", value: "jewel" },
-  { key: "2", text: "BagOrPurse", value: "bagorpurse" },
+  { key: "2", text: "Bag Or Purse", value: "bagorpurse" },
   { key: "3", text: "Card", value: "card" },
   { key: "4", text: "Pet", value: "pet" },
   { key: "5", text: "Junk", value: "junk" },
