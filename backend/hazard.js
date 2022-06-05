@@ -15,14 +15,15 @@ module.exports = async function (app) {
     var description = req.body.description;
     var type = req.body.type;
 
-    createHazard(
+    /*     createHazard(
       {
         username: username,
         type: type,
         description: description,
       },
       res
-    );
+    ); */
+    createHazard(req.body, res);
   });
 
   await app.get("/api/gethazards", (req, res) => {
