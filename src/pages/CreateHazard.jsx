@@ -1,38 +1,50 @@
-import React, { Component } from "react";
-import { Form } from "semantic-ui-react";
-import { Divider } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Form, Divider, Message } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
-import { Message } from "semantic-ui-react";
 import * as Consts from "./Consts.js";
 import "../css/CreateHazard.css";
 
-class CreateHazard extends Component {
-  state = {
-    username: "",
+const CreateHazard = () => {
+  const [timeInfo, setTimeInfo] = useState({
+    hazardDateTimeType: "dt_now",
+    publishDateTimeType: "dt_now",
+    currentTime: new Date().toLocaleString(),
+  });
+
+  const handleTimeInfoChange = (e, { name, value }) =>
+    setTimeInfo({ ...timeInfo, [name]: value });
+
+  const [formInfo, setFormInfo] = useState({
+    username: "", // need to take from logged-in user info
     hazardType: "",
     hazardSubType: "",
     hazardDetails: "",
     hazardLocation: "",
     hazardLocationText: "",
     hazardFile: "",
-    hazardDT: "",
-    hazardPublishDT: "",
+    hazardDT: timeInfo.currentTime,
+    hazardPublishDT: timeInfo.currentTime,
     hazardRemoveDT: "",
-    notifyMunicipality: "",
-    anonymousReport: "",
-    hazardId: "",
+    notifyMunicipality: false,
+    anonymousReport: false,
+    //hazardId: "",
+  });
+  const handleFormInfoChange = (e, { name, value }) =>
+    setFormInfo({ ...formInfo, [name]: value });
+
+  const handleCheckedChange = (e, { name, value }) => {
+    console.log("name: " + name);
+    console.log("value: " + value);
+    setFormInfo({ ...formInfo, [name]: !value });
+    //console.log("it works");
+    //console.log("e: " + JSON.stringify(e));
+    //console.log("e.key: " + e.value);
+    //console.log("e.value: " + e.value);
   };
 
-  handleTypeChange = async (e, { value }) =>
-    this.setState({ hazardType: value });
-
-  handleSubTypeChange = async (e, { value }) =>
-    this.setState({ hazardSubType: value });
-
-  handleLocationChange = async (e, { value }) =>
-    this.setState({ hazardLocation: value });
-
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
+    //alert(`The type you entered is: ${formInfo.hazardType}`);
+    //console.log(`The type you entered is: ${formInfo.hazardType}`);
     e.preventDefault();
     const response = await fetch("/api/createhazard", {
       method: "POST",
@@ -40,169 +52,234 @@ class CreateHazard extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: this.state.username,
-        type: this.state.hazardType,
-        subType: this.state.hazardSubType,
-        details: this.state.hazardDetails,
-        location: this.state.hazardLocation,
-        locationText: this.state.hazardLocationText,
-        file: this.state.hazardFile,
-        dt: this.state.hazardDT,
-        publishDT: this.state.hazardPublishDT,
-        removeDT: this.state.hazardRemoveDT,
-        notifyMunicipality: this.state.notifyMunicipality,
-        anonymousReport: this.state.anonymousReport,
+        username: formInfo.username,
+        type: formInfo.hazardType,
+        subType: formInfo.hazardSubType,
+        details: formInfo.hazardDetails,
+        location: formInfo.hazardLocation,
+        locationText: formInfo.hazardLocationText,
+        file: formInfo.hazardFile,
+        dt: formInfo.hazardDT,
+        publishDT: formInfo.hazardPublishDT,
+        removeDT: formInfo.hazardRemoveDT,
+        notifyMunicipality: formInfo.notifyMunicipality,
+        anonymousReport: formInfo.anonymousReport,
       }),
     });
     const body = await response.text();
-    var retText = "hazard not created";
     if (body) {
-      retText = body;
+      //setFormInfo({ ...formInfo, ["hazardID"]: body });
     }
 
-    this.setState({ hazardId: retText });
+    //console.log(`Created new hazard with Id: ${formInfo.hazardID}`);
   };
 
-  render() {
-    return (
-      <Form className="create-hazard-form" onSubmit={this.handleSubmit}>
-        <Divider horizontal>*</Divider>
-        <Form.Group widths="equal">
-          <Form.Select
-            fluid
-            label="Hazard type"
-            options={Consts.HazardTypes}
-            placeholder="Hazard type"
-            value={this.state.hazardType}
-            onChange={this.handleTypeChange}
-            //onChange={(e) =>
-            //this.setState({ hazardType: e.target.textContent })
-            //}
-          />
+  return (
+    <Form className="create-hazard-form" onSubmit={handleSubmit}>
+      <Divider horizontal>*</Divider>
+      <Form.Group widths="equal">
+        <Form.Select
+          fluid
+          label="Hazard type"
+          name="hazardType"
+          options={Consts.HazardTypes}
+          placeholder="Hazard type"
+          onChange={(e, { name, value }) =>
+            handleFormInfoChange(e, { name, value })
+          }
+        />
+        {formInfo.hazardType === "roadblock" && (
           <Form.Select
             fluid
             label="Road block:"
+            name="hazardSubType"
             options={Consts.RoadblockTypes}
             placeholder="select"
-            value={this.state.hazardSubType}
-            onChange={this.handleSubTypeChange}
+            onChange={(e, { name, value }) =>
+              handleFormInfoChange(e, { name, value })
+            }
           />
+        )}
+        {formInfo.hazardType === "roadside" && (
           <Form.Select
             fluid
             label="Road side:"
+            name="hazardSubType"
             options={Consts.RoadsideTypes}
             placeholder="select"
-            value={this.state.hazardSubType}
-            onChange={this.handleSubTypeChange}
+            onChange={(e, { name, value }) =>
+              handleFormInfoChange(e, { name, value })
+            }
           />
+        )}
+        {formInfo.hazardType === "lostandfounds" && (
           <Form.Select
             fluid
             label="Lost And Founds:"
+            name="hazardSubType"
             options={Consts.LostAndFoundsTypes}
             placeholder="select"
-            value={this.state.hazardSubType}
-            onChange={this.handleSubTypeChange}
-          />
-        </Form.Group>
-        <Form.Group widths="equal">
-          <Form.Select
-            fluid
-            search
-            selection
-            label="Location"
-            options={Consts.Locations}
-            placeholder="Enter hazard location"
-            value={this.state.hazardLocation}
-            onChange={this.handleLocationChange}
-          />
-          <Form.Input
-            label="OR enter manually"
-            fluid
-            placeholder="type address"
-            value={this.state.hazardLocationText}
-            onChange={(e) =>
-              this.setState({ hazardLocationText: e.target.value })
+            onChange={(e, { name, value }) =>
+              handleFormInfoChange(e, { name, value })
             }
           />
-        </Form.Group>
-        <Form.TextArea
-          label="Details"
-          placeholder="Tell us more about the hazard..."
-          value={this.state.hazardDetails}
-          onChange={(e) => this.setState({ hazardDetails: e.target.value })}
+        )}
+      </Form.Group>
+      <Form.Group widths="equal">
+        <Form.Select
+          fluid
+          search
+          selection
+          label="Location"
+          options={Consts.Locations}
+          placeholder="Enter hazard location"
+          name="hazardLocation"
+          onChange={(e, { name, value }) =>
+            handleFormInfoChange(e, { name, value })
+          }
         />
-        <Divider horizontal>*</Divider>
-        <Form.Button
-          content="Upload Image or Video"
-          labelPosition="left"
-          icon="file"
-          // onClick={() => this.fileInputRef.current.click()}
+        <Form.Input
+          label="OR enter manually"
+          fluid
+          placeholder="type address"
+          name="hazardLocationText"
+          onChange={(e, { name, value }) =>
+            handleFormInfoChange(e, { name, value })
+          }
         />
-        <input
-          type="file"
-          // ref={this.fileInputRef}
-          hidden
+      </Form.Group>
+      <Form.TextArea
+        label="Details"
+        placeholder="Tell us more about the hazard..."
+        name="hazardDetails"
+        onChange={(e, { name, value }) =>
+          handleFormInfoChange(e, { name, value })
+        }
+      />
+      <Divider horizontal>*</Divider>
+      <Form.Button
+        content="Upload Image or Video"
+        labelPosition="left"
+        icon="file"
+        // onClick={() => this.fileInputRef.current.click()}
+      />
+      <input
+        type="file"
+        // ref={this.fileInputRef}
+        hidden
+      />
+      <Divider horizontal>*</Divider>
+      <Form.Group inline>
+        <label>Hazard time</label>
+        <Form.Radio
+          label="Now"
+          name="hazardDateTimeType"
+          value="dt_now"
+          checked={timeInfo.hazardDateTimeType === "dt_now"}
+          onChange={(e, { name, value }) =>
+            handleTimeInfoChange(e, { name, value })
+          }
         />
-        <Divider horizontal>*</Divider>
-        <Form.Group inline>
-          <label>Hazard time</label>
-          <Form.Radio
-            label="Now"
-            name="hazard_time"
-            value="hazard_now"
-            // checked={value === "hazard_now"}
-            defaultChecked
-          />
+        <Form.Radio
+          label="Set time"
+          name="hazardDateTimeType"
+          value="dt_set"
+          checked={timeInfo.hazardDateTimeType === "dt_set"}
+          onChange={(e, { name, value }) =>
+            handleTimeInfoChange(e, { name, value })
+          }
+        />
+        {timeInfo.hazardDateTimeType === "dt_set" && (
           <DateTimeInput
-            name="hazard_dt"
+            name="hazardDT"
             placeholder="Select hazard date and time"
             iconPosition="left"
-            value={this.state.hazardDT}
-            onChange={(e) => this.setState({ hazardDT: e.target.value })}
+            value={formInfo.hazardDT}
+            onChange={(e, { name, value }) =>
+              handleFormInfoChange(e, { name, value })
+            }
           />
-        </Form.Group>
-        <Form.Group inline>
-          <label>Publish time</label>
-          <Form.Radio
-            label="Now"
-            value="publish_now"
-            name="publish_time"
-            // checked={value === "publish_now"}
-          />
+        )}
+      </Form.Group>
+      <Form.Group inline>
+        <label>Publish time</label>
+        <Form.Radio
+          label="Now"
+          name="publishDateTimeType"
+          value="dt_now"
+          checked={timeInfo.publishDateTimeType === "dt_now"}
+          onChange={(e, { name, value }) =>
+            handleTimeInfoChange(e, { name, value })
+          }
+        />
+        <Form.Radio
+          label="Set time"
+          name="publishDateTimeType"
+          value="dt_set"
+          checked={formInfo.publishDateTimeType === "dt_set"}
+          onChange={(e, { name, value }) =>
+            handleTimeInfoChange(e, { name, value })
+          }
+        />
+        {timeInfo.publishDateTimeType === "dt_set" && (
           <DateTimeInput
-            name="publish_dt"
+            name="hazardPublishDT"
             placeholder="Select publish date and time"
             iconPosition="left"
+            value={formInfo.hazardPublishDT}
+            onChange={(e, { name, value }) =>
+              handleFormInfoChange(e, { name, value })
+            }
           />
-        </Form.Group>
-        <Form.Group inline>
-          <label>Remove time</label>
-          <Form.Radio
-            label="System Default (24 hours)"
-            value="remove_default"
-            name="remove_time"
-            // checked={value === "remove_default"}
-          />
-          <DateTimeInput
-            name="remove_dt"
-            placeholder="Select date and time to remove"
-            iconPosition="left"
-          />
-        </Form.Group>
-        <Divider horizontal>*</Divider>
-        <Form.Checkbox label="Send Alert to local municipality" />
-        <Form.Checkbox label="Anonymous report" />
-        <Message
-          visible
-          success
-          header="Hazard Created Successfully, New ID:"
-          content={this.state.hazardId}
-        />{" "}
-        <Divider horizontal>*</Divider>
-        <Form.Button>Submit</Form.Button>
-      </Form>
-    );
-  }
-}
+        )}
+      </Form.Group>
+      <Form.Group inline>
+        <label>Remove time</label>
+        <Form.Radio
+          label="System Default (24 hours)"
+          value="remove_default"
+          name="remove_time"
+          // checked={value === "remove_default"}
+        />
+        <DateTimeInput
+          name="remove_dt"
+          placeholder="Select date and time to remove"
+          iconPosition="left"
+        />
+      </Form.Group>
+      <Divider horizontal>*</Divider>
+      <Form.Checkbox
+        toggle
+        label="Send Alert to local municipality"
+        name="notifyMunicipality"
+        value={formInfo.notifyMunicipality}
+        onClick={(e, { name, value }) =>
+          handleCheckedChange(e, { name, value })
+        }
+      />
+      <Form.Checkbox
+        toggle
+        label="Anonymous report"
+        name="anonymousReport"
+        //checked={formInfo.anonymousReport === "true"}
+        value={formInfo.anonymousReport}
+        onClick={(e, { name, value }) =>
+          handleCheckedChange(e, { name, value })
+        }
+      />
+      <Message
+        hidden
+        success
+        header="Hazard Created Successfully"
+        //header="Hazard Created Successfully, New ID:"
+        //content={formInfo.hazardId}
+      />{" "}
+      <Divider horizontal>*</Divider>
+      <Form.Button type="submit" color="blue">
+        Create
+      </Form.Button>
+    </Form>
+  );
+};
 
 export default CreateHazard;
