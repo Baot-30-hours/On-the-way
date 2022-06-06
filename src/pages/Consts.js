@@ -1,8 +1,7 @@
 export const HazardTypes = [
   { key: "1", text: "Road block", value: "roadblock" },
   { key: "2", text: "Road side", value: "roadside" },
-  { key: "3", text: "Lost", value: "lost" },
-  { key: "4", text: "Found", value: "found" },
+  { key: "3", text: "Lost and Founds", value: "lostandfounds" },
   { key: "5", text: "Other", value: "other" },
 ];
 
