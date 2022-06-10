@@ -7,6 +7,9 @@ const FormCreateUser = () => {
   const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', nickName: '', email: '', city: '', password: '', repeatPassword: '', terms: false });
   const [formErrors, setFormErrors] = useState({});
 
+  const handleFormInfoChange = (e, { name, value }) =>
+  setUserInfo({ ...userInfo, [name]: value });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let currentFormErrors = formErrors;
@@ -77,6 +80,13 @@ const FormCreateUser = () => {
     }
   };
 
+  const getCities = async () => {
+    const response = await fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=100000");
+    const body = await response.json();
+    console.log(body.result.records);
+    return body.result.records;
+  }
+
   return (
     <Form className='wrapper'>
       <Divider horizontal>*</Divider>
@@ -134,14 +144,16 @@ const FormCreateUser = () => {
       {formErrors && formErrors.email && <span className='error'>{formErrors.email}</span>}
         <br />
       {/* external api */}
-      <Form.Input
+      <Form.Select
         fluid
         label='City'
         name='city'
         id='city'
-        type='text'
+        options={[{ key: "1", text: "TBD", value: "TBD" }]}
         placeholder='city'
-        onChange={(e) => handleChange(e)}
+        onChange={(e, { name, value }) =>
+            handleFormInfoChange(e, { name, value })
+          }
       />
       {/* אותיות מספרים ותווים מיוחדים (מעל המספרים) מינימום 5 מקסימום 20 */}
       <Form.Input
