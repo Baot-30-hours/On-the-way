@@ -18,11 +18,32 @@ module.exports = function (app) {
     listUsers(res);
   });
 
+  app.post("/api/adduser", (req, res) => {
+    createUser(req.body, res);
+  });
+
   app.post("/api/finduser", (req, res) => {
     //console.log(req.body);
     var username = req.body.username;
     findOneUserByUserame(username, res);
   });
+
+  async function createUser(newUser, res) {
+    console.log("newUser: " + newUser);
+  
+    MongoClient.connect(mongodb_url, async function (err, db) {
+      if (err) throw err;
+      var dbo = db.db(db_name);
+  
+      // create the users document
+      const result = await dbo.collection("users").insertOne(newUser);
+      console.log(
+        `New user created with the following id: ${result.insertedId}`
+      );
+      res.send(result.insertedId);
+      db.close();
+    });
+  }
 
   function listUsers(res) {
     MongoClient.connect(mongodb_url, function (err, db) {

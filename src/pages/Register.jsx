@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Divider, Button, Checkbox, Flag } from 'semantic-ui-react';
+import { Form, Divider, Button, Checkbox } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import '../css/CreateUser.css';
 
@@ -53,8 +53,28 @@ const FormCreateUser = () => {
     else setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     console.log('userInfo', userInfo);
+    const response = await fetch("/api/adduser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        nickName: userInfo.nickName,
+        email: userInfo.email,
+        city: userInfo.city,
+        password: userInfo.password,
+        repeatPassword: userInfo.repeatPassword
+      }),
+    });
+    const body = await response.text();
+    if (body) {
+      console.log(`user ${userInfo.firstName} was inserted to the DB with id ${body}`);
+    }
   };
 
   return (
