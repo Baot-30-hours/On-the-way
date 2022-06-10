@@ -6,6 +6,7 @@ import "../css/CreateHazard.css";
 class BackendTest extends Component {
   state = {
     hazardsList: "",
+    usersList: "",
     username: "",
     hazardType: "",
     hazardDescription: "",
@@ -16,13 +17,23 @@ class BackendTest extends Component {
     this.callApi()
       .then((res) => this.setState({ hazardsList: res.hazards }))
       .catch((err) => console.log(err));
+
+      this.callGetUsers()
+      .then((res) => this.setState({ usersList: res.users }))
+      .catch((err) => console.log(err));
   }
 
   callApi = async () => {
     const response = await fetch("/api/gethazards");
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
+    return body;
+  };
 
+  callGetUsers = async () => {
+    const response = await fetch("/api/getusers");
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
     return body;
   };
 
@@ -60,6 +71,17 @@ class BackendTest extends Component {
           <p>{this.state.hazardsList}</p>
         </Form.Group>
         <Divider horizontal>*</Divider>
+        
+        <Form.Group widths="equal">
+          <p>
+            <strong>Users list:</strong>
+          </p>
+        </Form.Group>
+        <Form.Group widths="equal">
+          <p>{this.state.usersList}</p>
+        </Form.Group>
+        <Divider horizontal>*</Divider>
+
         <Form.Group widths="equal">
           <Form.Input
             type="text"

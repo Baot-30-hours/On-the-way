@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Form, Divider, Button, Checkbox, Flag } from 'semantic-ui-react';
+import { Form, Divider, Button, Checkbox } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import '../css/CreateUser.css';
 
 const FormCreateUser = () => {
   const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', nickName: '', email: '', city: '', password: '', repeatPassword: '', terms: false });
   const [formErrors, setFormErrors] = useState({});
+
+  const handleFormInfoChange = (e, { name, value }) =>
+  setUserInfo({ ...userInfo, [name]: value });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,9 +56,36 @@ const FormCreateUser = () => {
     else setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     console.log('userInfo', userInfo);
+    const response = await fetch("/api/adduser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        nickName: userInfo.nickName,
+        email: userInfo.email,
+        city: userInfo.city,
+        password: userInfo.password,
+        repeatPassword: userInfo.repeatPassword
+      }),
+    });
+    const body = await response.text();
+    if (body) {
+      console.log(`user ${userInfo.firstName} was inserted to the DB with id ${body}`);
+    }
   };
+
+  const getCities = async () => {
+    const response = await fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=100000");
+    const body = await response.json();
+    console.log(body.result.records);
+    return body.result.records;
+  }
 
   return (
     <Form className='wrapper'>
@@ -114,14 +144,16 @@ const FormCreateUser = () => {
       {formErrors && formErrors.email && <span className='error'>{formErrors.email}</span>}
         <br />
       {/* external api */}
-      <Form.Input
+      <Form.Select
         fluid
         label='City'
         name='city'
         id='city'
-        type='text'
+        options={[{ key: "1", text: "TBD", value: "TBD" }]}
         placeholder='city'
-        onChange={(e) => handleChange(e)}
+        onChange={(e, { name, value }) =>
+            handleFormInfoChange(e, { name, value })
+          }
       />
       {/* אותיות מספרים ותווים מיוחדים (מעל המספרים) מינימום 5 מקסימום 20 */}
       <Form.Input
