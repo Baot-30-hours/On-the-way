@@ -5,10 +5,15 @@ import * as Consts from "./Consts.js";
 import "../css/CreateHazard.css";
 
 const CreateHazard = () => {
+
+  const currentDateAndTime = new Date();
+
   const [timeInfo, setTimeInfo] = useState({
     hazardDateTimeType: "dt_now",
     publishDateTimeType: "dt_now",
-    currentTime: new Date().toLocaleString(),
+    removeDateTimeType: "dt_tomorrow",
+    now: currentDateAndTime.toLocaleString(),
+    tomorrow: new Date(currentDateAndTime.getTime() +(60 * 60 * 24 * 1000)).toLocaleString()
   });
 
   const handleTimeInfoChange = (e, { name, value }) =>
@@ -21,14 +26,15 @@ const CreateHazard = () => {
     hazardDetails: "",
     hazardLocation: "",
     hazardLocationText: "",
-    hazardFile: "",
-    hazardDT: timeInfo.currentTime,
-    hazardPublishDT: timeInfo.currentTime,
-    hazardRemoveDT: "",
+    hazardFile: null,
+    hazardDT: timeInfo.now,
+    hazardPublishDT: timeInfo.now,
+    hazardRemoveDT: timeInfo.tomorrow,
     notifyMunicipality: false,
     anonymousReport: false,
     //hazardId: "",
   });
+
   const handleFormInfoChange = (e, { name, value }) =>
     setFormInfo({ ...formInfo, [name]: value });
 
@@ -149,16 +155,12 @@ const CreateHazard = () => {
         }
       />
       <Divider horizontal>*</Divider>
-      <Form.Button
-        content="Upload Image or Video"
-        labelPosition="left"
-        icon="file"
-        // onClick={() => this.fileInputRef.current.click()}
-      />
-      <input
+      
+      <Form.Input
         type="file"
-        // ref={this.fileInputRef}
-        hidden
+        label= "Upload a picture or a video: "
+        name= "hazardFile"
+        onChange={(e)=> setFormInfo({...formInfo, hazardFile:e.target.files[0]})}
       />
       <Divider horizontal>*</Divider>
       <Form.Group inline>
@@ -208,7 +210,7 @@ const CreateHazard = () => {
           label="Set time"
           name="publishDateTimeType"
           value="dt_set"
-          checked={formInfo.publishDateTimeType === "dt_set"}
+          checked={timeInfo.publishDateTimeType === "dt_set"}
           onChange={(e, { name, value }) =>
             handleTimeInfoChange(e, { name, value })
           }
@@ -229,15 +231,31 @@ const CreateHazard = () => {
         <label>Remove time</label>
         <Form.Radio
           label="System Default (24 hours)"
-          value="remove_default"
-          name="remove_time"
-          // checked={value === "remove_default"}
+          value="dt_tomorrow"
+          name="removeDateTimeType"
+          checked={timeInfo.removeDateTimeType === "dt_tomorrow"}
+          onChange={(e, { name, value }) =>
+            handleTimeInfoChange(e, { name, value })
+          }
         />
+        <Form.Radio
+          label="Set time"
+          name="removeDateTimeType"
+          value="dt_set"
+          checked={timeInfo.removeDateTimeType === "dt_set"}
+          onChange={(e, { name, value }) =>
+            handleTimeInfoChange(e, { name, value })
+          }
+        />
+        {timeInfo.removeDateTimeType === "dt_set" && (
         <DateTimeInput
-          name="remove_dt"
+          name="hazardRemoveDT"
           placeholder="Select date and time to remove"
           iconPosition="left"
-        />
+          value={formInfo.hazardRemoveDT}
+          onChange={(e, { name, value }) =>
+            handleFormInfoChange(e, { name, value })}
+        />)}
       </Form.Group>
       <Divider horizontal>*</Divider>
       <Form.Checkbox
