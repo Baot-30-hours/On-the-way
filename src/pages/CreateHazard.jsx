@@ -11,7 +11,7 @@ const CreateHazard = () => {
   const [timeInfo, setTimeInfo] = useState({
     hazardDateTimeType: "dt_now",
     publishDateTimeType: "dt_now",
-    removeDateTimeType: "default",
+    removeDateTimeType: "dt_tomorrow",
     now: currentDateAndTime.toLocaleString(),
     tomorrow: new Date(currentDateAndTime.getTime() +(60 * 60 * 24 * 1000)).toLocaleString()
   });
@@ -231,9 +231,9 @@ const CreateHazard = () => {
         <label>Remove time</label>
         <Form.Radio
           label="System Default (24 hours)"
-          value="default"
+          value="dt_tomorrow"
           name="removeDateTimeType"
-          checked={timeInfo.removeDateTimeType === "default"}
+          checked={timeInfo.removeDateTimeType === "dt_tomorrow"}
           onChange={(e, { name, value }) =>
             handleTimeInfoChange(e, { name, value })
           }
