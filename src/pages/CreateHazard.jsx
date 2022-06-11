@@ -15,7 +15,7 @@ const CreateHazard = () => {
     setTimeInfo({ ...timeInfo, [name]: value });
 
   const [formInfo, setFormInfo] = useState({
-    username: "", // need to take from logged-in user info
+    username: "logged_user", // need to take from logged-in user info
     hazardType: "",
     hazardSubType: "",
     hazardDetails: "",
@@ -33,18 +33,10 @@ const CreateHazard = () => {
     setFormInfo({ ...formInfo, [name]: value });
 
   const handleCheckedChange = (e, { name, value }) => {
-    console.log("name: " + name);
-    console.log("value: " + value);
     setFormInfo({ ...formInfo, [name]: !value });
-    //console.log("it works");
-    //console.log("e: " + JSON.stringify(e));
-    //console.log("e.key: " + e.value);
-    //console.log("e.value: " + e.value);
   };
 
   const handleSubmit = async (e) => {
-    //alert(`The type you entered is: ${formInfo.hazardType}`);
-    //console.log(`The type you entered is: ${formInfo.hazardType}`);
     e.preventDefault();
     const response = await fetch("/api/createhazard", {
       method: "POST",
@@ -261,7 +253,6 @@ const CreateHazard = () => {
         toggle
         label="Anonymous report"
         name="anonymousReport"
-        //checked={formInfo.anonymousReport === "true"}
         value={formInfo.anonymousReport}
         onClick={(e, { name, value }) =>
           handleCheckedChange(e, { name, value })

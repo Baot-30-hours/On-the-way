@@ -12,6 +12,9 @@ const Layout = () => {
             <Link to="/createhazard">Create Hazard</Link>
           </li>
           <li>
+            <Link to="/hazardlist">Hazard List</Link>
+          </li>
+          <li>
             <Link to="/register">Sign in</Link>
           </li>
           <li>
