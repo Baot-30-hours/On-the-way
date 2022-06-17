@@ -4,9 +4,13 @@ import React from "react";
 const Info = ({ streetAddress, fromStreet, toStreet, jobDesctiprion }) => (
     <div>
       <div>
+        <h4>address: </h4> 
         <p>{streetAddress}</p>
+        <h4>from street: </h4>
         <p>{fromStreet}</p>
+        <h4>to street: </h4>
         <p>{toStreet}</p>
+        <h4>job Desctiprion: </h4>
         <p>{jobDesctiprion}</p>
       </div>
     </div>
