@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Form, Divider, Button, Checkbox } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import '../css/CreateUser.css';
-import { useEffect } from 'react';
 
 const FormCreateUser = () => {
   const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', nickName: '', email: '', city: '', password: '', repeatPassword: '', terms: false });
@@ -88,7 +87,7 @@ const FormCreateUser = () => {
       const body = await result.json();
       const cities = body.result.records;
       const newCities = [];
-      for(let i in cities){
+      for (let i in cities) {
         newCities.push({ key: i, text: cities[i].שם_ישוב, value: cities[i].שם_ישוב });
       }
       setCities(newCities);
@@ -157,15 +156,15 @@ const FormCreateUser = () => {
         />
         {formErrors && formErrors.email && <span className='error'>{formErrors.email}</span>}
         <br />
-      {/* external api */}
-      <Form.Select
-        fluid
-        label='City'
-        name='city'
-        id='city'
-        options={cities}
-        placeholder='city'
-        onChange={(e, { name, value }) =>
+        {/* external api */}
+        <Form.Select
+          fluid
+          label='City'
+          name='city'
+          id='city'
+          options={cities}
+          placeholder='city'
+          onChange={(e, { name, value }) =>
             handleFormInfoChange(e, { name, value })
           }
         />
