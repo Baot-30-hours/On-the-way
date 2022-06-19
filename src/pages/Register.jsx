@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Divider, Button, Checkbox } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import '../css/CreateUser.css';
@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 const FormCreateUser = () => {
   const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', nickName: '', email: '', city: '', password: '', repeatPassword: '', terms: false });
   const [formErrors, setFormErrors] = useState({});
+  const [cities, setCities] = useState([]);
 
   const handleFormInfoChange = (e, { name, value }) =>
     setUserInfo({ ...userInfo, [name]: value });
@@ -81,12 +82,20 @@ const FormCreateUser = () => {
     }
   };
 
-  // const getCities = async () => {
-  //   const response = await fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=100000");
-  //   const body = await response.json();
-  //   console.log(body.result.records);
-  //   return body.result.records;
-  // }
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=100000");
+      const body = await result.json();
+      const cities = body.result.records;
+      const newCities = [];
+      for(let i in cities){
+        newCities.push({ key: i, text: cities[i].שם_ישוב, value: cities[i].שם_ישוב });
+      }
+      setCities(newCities);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="register-wrapper">
@@ -148,15 +157,15 @@ const FormCreateUser = () => {
         />
         {formErrors && formErrors.email && <span className='error'>{formErrors.email}</span>}
         <br />
-        {/* external api */}
-        <Form.Select
-          fluid
-          label='City'
-          name='city'
-          id='city'
-          options={[{ key: "1", text: "TBD", value: "TBD" }]}
-          placeholder='city'
-          onChange={(e, { name, value }) =>
+      {/* external api */}
+      <Form.Select
+        fluid
+        label='City'
+        name='city'
+        id='city'
+        options={cities}
+        placeholder='city'
+        onChange={(e, { name, value }) =>
             handleFormInfoChange(e, { name, value })
           }
         />
