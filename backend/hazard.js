@@ -2,14 +2,44 @@
 var nconf = require("nconf");
 nconf.argv().env();
 nconf.file({ file: "./config.json" });
+var express = require("express");
 
 var MongoClient = require("mongodb").MongoClient;
 var mongodb_url = nconf.get("mongodb_url");
 var db_name = nconf.get("db_name");
 
 module.exports = async function (app) {
-  await app.post("/api/createhazard", (req, res) => {
-    createHazard(req.body, res);
+  await app.post("/api/createhazard", function (req, res) {
+    const multer = require("multer");
+    app.use(
+      "/public/uploaded",
+      express.static(__dirname + "/public/uploaded/")
+    );
+    var now = Date.now();
+    const storage = multer.diskStorage({
+      destination: "./public/uploaded",
+      filename: function (req, file, cb) {
+        var name = now + "-" + file.originalname;
+        cb(null, name);
+      },
+    });
+
+    const upload = multer({ storage: storage }).array("file");
+    upload(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        console.log("multer upload error");
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        console.log("multer unknown error");
+      }
+
+      // Everything went fine.
+      var newId = createHazard(req, now);
+      //console.log("newId", newId);
+
+      res.sendStatus(200);
+    });
   });
 
   await app.get("/api/gethazards", (req, res) => {
@@ -21,20 +51,24 @@ module.exports = async function (app) {
   await app.post("/api/deletehazard", (req, res) => {});
 };
 
-async function createHazard(newHazard, res) {
-  //console.log("username: " + newHazard.username);
-
+async function createHazard(req, now) {
   MongoClient.connect(mongodb_url, async function (err, db) {
     if (err) throw err;
     var dbo = db.db(db_name);
 
+    var newHazard = req.body;
+
+    newHazard.file = now + "-" + req.files[0].originalname;
+
     // create the hazard document
     const result = await dbo.collection("hazards").insertOne(newHazard);
-    console.log(
+    /* console.log(
       `New hazard created with the following id: ${result.insertedId}`
-    );
-    res.send(result.insertedId);
+    ); */
     db.close();
+
+    var newId = result.insertedId;
+    return newId;
   });
 }
 
@@ -49,8 +83,6 @@ async function getHazards(res) {
       .toArray(function (err, result) {
         if (err) throw err;
         if (result) {
-          console.log(`Hazards found:`);
-          console.log(result);
           res.send({ hazards: JSON.stringify(result) });
         } else {
           console.log(`No hazards found.`);

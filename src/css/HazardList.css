@@ -1,5 +1,5 @@
 .wrapper {
-  max-width: 30vw;
-  width: 30vw;
-  margin: auto;
+  max-width: 850px;
+  width: 850px;
+  position: relative;
 }
