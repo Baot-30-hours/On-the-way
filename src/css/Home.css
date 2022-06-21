@@ -1,0 +1,53 @@
+.container {
+    display: grid;
+    justify-items: center;
+  }
+
+  .app-header {
+    min-height: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    text-align: center;
+    background-color: #136b83;
+    position: fixed;
+    justify-self: center;
+  }
+  
+  .ui.three.column.centered.grid{
+    height: fit-content;
+  }
+
+  .func-button{
+    min-height: 30vh !important;
+    margin-left: 100px;
+  }
+
+  .msg-btn{
+    grid-column-start:1;
+    grid-column-end: 1;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+  
+  .new-btn{
+    grid-column-start:2;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+
+  .mail-btn{
+    grid-column-start:3;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+
+  .live-map{
+    min-height: 60vh;
+    justify-self: center;
+  }
