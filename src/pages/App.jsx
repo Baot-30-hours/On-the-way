@@ -7,7 +7,6 @@ import CreateHazard from "./CreateHazard";
 import CreateUser from "./Register";
 import HazardList from "./HazardList";
 import BackendTest from "./BackendTest";
-import LogIn from "./RegisterOptimize";
 import RegisterOptimize from "./RegisterOptimize";
 
 export default function App() {
