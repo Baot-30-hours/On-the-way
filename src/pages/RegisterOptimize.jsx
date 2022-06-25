@@ -109,7 +109,7 @@ const RegisterOptimize = ({ type }) => {
       <h1>{type}</h1>
       {
         type === 'log in'
-          ? <div className="subtitle">Don't have an account? <Link to='/sign-up'>Sign Up</Link></div>
+          ? <div className="subtitle">Don't have an account? <Link to='/register'>Sign Up</Link></div>
           : <div className="subtitle">Already have an account? <Link to='/log-in'>Log In</Link></div>
       }
       <div className="form-wrapper">
