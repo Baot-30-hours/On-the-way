@@ -31,7 +31,7 @@ export default function Home() {
           <Button color='yellow' className="mail-btn">My messages</Button>
         </div>
       </div>
-      <SimpleMap />
+      {/* <SimpleMap /> */}
       {/* <iframe className="live-map" src="https://www5.tel-aviv.gov.il/TlvForms/106plus/" width={1000} height={500} ></iframe> */}
     </div>
   );
