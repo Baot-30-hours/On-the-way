@@ -7,6 +7,7 @@ const FormCreateUser = () => {
   const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', nickName: '', email: '', city: '', password: '', repeatPassword: '', terms: false });
   const [formErrors, setFormErrors] = useState({});
   const [cities, setCities] = useState([]);
+  const [disable, setDisable] = useState(true);
 
   const handleFormInfoChange = (e, { name, value }) =>
     setUserInfo({ ...userInfo, [name]: value });
@@ -53,12 +54,26 @@ const FormCreateUser = () => {
         break;
     }
     setFormErrors(currentFormErrors);
-    if (e.target.checked) setUserInfo({ ...userInfo, [e.target.name]: e.target.checked });
+    if (e.target.type === 'checkbox') {
+      userInfo.terms = e.target.checked;
+    }
     else setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+    if(Object.keys(currentFormErrors).length === 0 
+          && userInfo.lastName
+          && userInfo.email
+          && userInfo.password
+          && userInfo.repeatPassword
+          && userInfo.terms){
+      setDisable(false);
+    }
+    else {
+      setDisable(true)
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setDisable(true)
     console.log('userInfo', userInfo);
     const response = await fetch("/api/adduser", {
       method: "POST",
@@ -201,14 +216,8 @@ const FormCreateUser = () => {
           fluid
           color="blue"
           type="submit"
-          disabled={!userInfo.firstName
-            || !userInfo.lastName
-            || !userInfo.nickName
-            || !userInfo.email
-            || !userInfo.city
-            || !userInfo.password
-            || !userInfo.repeatPassword
-            || !userInfo.terms}
+          name="submit"
+          disabled={disable}
           onClick={handleSubmit}>Submit</Button>
 
         <Link to='/TBD'>Already have an account? Click here to sign in</Link>
