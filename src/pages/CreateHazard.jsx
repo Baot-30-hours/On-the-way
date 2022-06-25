@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, Routes, Route, useNavigate } from "react-router-dom";
-
-import { Form, Divider, Message } from "semantic-ui-react";
+import { Form, Divider, Message, Button } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
 import "../css/LogIn.css";
@@ -24,11 +23,11 @@ const CreateHazard = () => {
 
   const [formInfo, setFormInfo] = useState({
     username: "logged_user", // need to take from logged-in user info
-    hazardType: "",
-    hazardSubType: "",
-    hazardDetails: "",
-    hazardLocation: "",
-    hazardLocationText: "",
+    hazardType: '',
+    hazardSubType: '',
+    hazardDetails: '',
+    hazardLocation: '',
+    hazardLocationText: '',
     hazardFiles: null,
     hazardDT: timeInfo.now,
     hazardPublishDT: timeInfo.now,
@@ -299,9 +298,15 @@ const CreateHazard = () => {
           //content={formInfo.hazardId}
         />{" "}
         <Divider horizontal>*</Divider>
-        <Form.Button type="submit" color="blue">
+        <Button 
+        fluid
+        type="submit" 
+        color="blue"
+        disabled={
+          !formInfo.hazardType
+          ||!formInfo.hazardSubType}>
           Create
-        </Form.Button>
+        </Button>
       </Form>
     </div>
   );
