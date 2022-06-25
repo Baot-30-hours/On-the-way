@@ -49,6 +49,7 @@ const CreateHazard = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("submit ", formInfo)
     e.preventDefault();
 
     const data = new FormData();
@@ -65,9 +66,10 @@ const CreateHazard = () => {
     data.append("notifyMunicipality", formInfo.notifyMunicipality);
     data.append("anonymousReport", formInfo.anonymousReport);
 
-    for (var i = 0; i < formInfo.hazardFiles.length; i++) {
-      data.append("file", formInfo.hazardFiles[i]);
-    }
+    if (formInfo.hazardFiles != null) {
+      for (var i = 0; i < formInfo.hazardFiles.length; i++) {
+        data.append("file", formInfo.hazardFiles[i]);
+      }}
 
     await fetch("/api/createhazard", {
       method: "POST",
@@ -84,7 +86,7 @@ const CreateHazard = () => {
 
   return (
     <div className="log-in">
-      <Form onSubmit={handleSubmit}>
+      <Form >
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
           <Form.Select
@@ -304,7 +306,8 @@ const CreateHazard = () => {
         color="blue"
         disabled={
           !formInfo.hazardType
-          ||!formInfo.hazardSubType}>
+          || !formInfo.hazardSubType}
+        onClick={handleSubmit}>
           Create
         </Button>
       </Form>
