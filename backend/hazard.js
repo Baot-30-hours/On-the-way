@@ -58,7 +58,17 @@ async function createHazard(req, now) {
 
     var newHazard = req.body;
 
-    newHazard.file = now + "-" + req.files[0].originalname;
+    // save up to 5 images
+    if (req.files.length > 0)
+      newHazard.file1 = now + "-" + req.files[0].originalname;
+    if (req.files.length > 1)
+      newHazard.file2 = now + "-" + req.files[1].originalname;
+    if (req.files.length > 2)
+      newHazard.file3 = now + "-" + req.files[2].originalname;
+    if (req.files.length > 3)
+      newHazard.file4 = now + "-" + req.files[3].originalname;
+    if (req.files.length > 4)
+      newHazard.file5 = now + "-" + req.files[4].originalname;
 
     // create the hazard document
     const result = await dbo.collection("hazards").insertOne(newHazard);
