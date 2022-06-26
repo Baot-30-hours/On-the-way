@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Form, Divider, Message, Button } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
@@ -172,7 +172,7 @@ const CreateHazard = () => {
           type="file"
           label="Upload a picture or a video: "
           name="hazardFiles"
-          accept=".jpg"
+          accept=".jpg,.png,.jpeg"
           multiple
           onChange={(e) => handleFileChange(e)}
         />
@@ -292,13 +292,6 @@ const CreateHazard = () => {
             handleCheckedChange(e, { name, value })
           }
         />
-        <Message
-          hidden
-          success
-          header="Hazard Created Successfully"
-          //header="Hazard Created Successfully, New ID:"
-          //content={formInfo.hazardId}
-        />{" "}
         <Divider horizontal>*</Divider>
         <Button 
         fluid
