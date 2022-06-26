@@ -1,6 +1,8 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Link, Outlet, NavLink } from "react-router-dom";
 import React from 'react';
 import '../css/Layout.css';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
 
 const Layout = ({user}) => {
 
@@ -59,6 +61,12 @@ const Layout = ({user}) => {
                 margin: "1rem 0"
               }}>{`Hello ${user}`}</h3>
           </li>
+          <li>
+          <IconButton onClick={<Link to="/userprofile">User Profile</Link>} >
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+          <Link to="/userprofile">User Profile</Link>
+            </li>
         </ul>
       </nav>
       <Outlet />
