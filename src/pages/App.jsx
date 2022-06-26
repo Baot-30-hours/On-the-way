@@ -11,6 +11,7 @@ import BackendTest from "./BackendTest";
 import LogIn from "./LogIn";
 import FetchData from "./NewBoard";
 import HazardDetails from "./HazardDetails";
+import UserProfile from "../components/UserProfile"
 
 export default function App() {
 
@@ -28,6 +29,8 @@ export default function App() {
           <Route path="hazarddetails" element={<HazardDetails />} />
           <Route path="register" element={<CreateUser />} />
           <Route path="log-in" element={<LogIn setUser={setUser}/>} />
+          <Route path="newsboard" element={<FetchData />} />
+          <Route path="userprofile" element={<UserProfile />}/>
         </Route>
       </Routes>
     </BrowserRouter>
