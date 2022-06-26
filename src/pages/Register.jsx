@@ -89,7 +89,8 @@ const FormCreateUser = () => {
         password: userInfo.password,
         repeatPassword: userInfo.repeatPassword
       }),
-    });
+    }).then(alert("User created successfully"));
+
     const body = await response.text();
     if (body) {
       console.log(`user ${userInfo.firstName} was inserted to the DB with id ${body}`);
@@ -220,7 +221,7 @@ const FormCreateUser = () => {
           disabled={disable}
           onClick={handleSubmit}>Submit</Button>
 
-        <Link to='/TBD'>Already have an account? Click here to sign in</Link>
+        <Link to='/log-in'>Already have an account? Click here to sign in</Link>
       </Form>
     </div>
   );

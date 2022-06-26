@@ -58,7 +58,8 @@ async function createHazard(req, now) {
 
     var newHazard = req.body;
 
-    newHazard.file = now + "-" + req.files[0].originalname;
+    if(req.files.length > 0)
+      newHazard.file = now + "-" + req.files[0].originalname;
 
     // create the hazard document
     const result = await dbo.collection("hazards").insertOne(newHazard);
