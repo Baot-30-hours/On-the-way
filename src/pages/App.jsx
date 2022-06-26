@@ -8,7 +8,7 @@ import CreateUser from "./Register";
 import HazardList from "./HazardList";
 import BackendTest from "./BackendTest";
 import RegisterOptimize from "./RegisterOptimize";
-
+import FetchData from "./NewBoard"
 export default function App() {
   // Google Maps Platform API Key
   // AIzaSyBtUSAW7ssnBNngTj4Q7X076cyRoCHtd94
@@ -23,6 +23,7 @@ export default function App() {
           <Route path="log-in" element={<RegisterOptimize type="log in" />} />
           <Route path="sign-up" element={<RegisterOptimize type="sign up" />} />
           <Route path="backendtest" element={<BackendTest />} />
+          <Route path="newsboard" element={<FetchData />} />
         </Route>
       </Routes>
     </BrowserRouter>
