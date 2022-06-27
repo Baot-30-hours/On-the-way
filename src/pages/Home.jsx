@@ -4,9 +4,14 @@ import "../css/App.css";
 import '../css/Home.css';
 import { useNavigate } from "react-router-dom";
 import SimpleMap from "./GoogleMap";
+import { LoadScript } from "@react-google-maps/api";
 
 
 export default function Home() {
+  const lib = ["places"];
+  const id = 'google-map-script';
+  const key = "AIzaSyBtUSAW7ssnBNngTj4Q7X076cyRoCHtd94";
+
   var url = "https://www.waze.com/he/live-map&output=embed";
   var userName = "Israel Israeli";
 
@@ -21,7 +26,7 @@ export default function Home() {
   };
 
   return (
-    <div className="container App">
+    <div className="container">
       <header className="app-header">
         <p>Hello {userName}</p>
       </header>
@@ -32,7 +37,9 @@ export default function Home() {
           <Button color='yellow' className="mail-btn">My messages</Button>
         </div>
       </div>
-      <SimpleMap />
+      <LoadScript googleMapsApiKey={key} libraries={lib} id={id}>
+        <SimpleMap />
+      </LoadScript>
       {/* <iframe className="live-map" src="https://www5.tel-aviv.gov.il/TlvForms/106plus/" width={1000} height={500} ></iframe> */}
     </div>
   );
