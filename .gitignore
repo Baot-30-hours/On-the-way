@@ -1,2 +1,3 @@
 node_modules
 backend/public/uploaded
+.DS_Store
