@@ -5,6 +5,7 @@ nconf.file({ file: "./config.json" });
 var express = require("express");
 
 var MongoClient = require("mongodb").MongoClient;
+var ObjectId = require("mongodb").ObjectId;
 var mongodb_url = nconf.get("mongodb_url");
 var db_name = nconf.get("db_name");
 
@@ -43,7 +44,7 @@ module.exports = async function (app) {
   });
 
   await app.get("/api/gethazards", (req, res) => {
-    getHazards(res);
+    getHazards(req, res);
   });
 
   await app.post("/api/updatehazard", (req, res) => {});
@@ -82,24 +83,38 @@ async function createHazard(req, now) {
   });
 }
 
-async function getHazards(res) {
+async function getHazards(req, res) {
+  const url = require("url");
+  const queryObject = url.parse(req.url, true).query;
+  var hazardId = queryObject.hazardId;
+
   MongoClient.connect(mongodb_url, async function (err, db) {
     if (err) throw err;
     var dbo = db.db(db_name);
 
-    await dbo
-      .collection("hazards")
-      .find({})
-      .toArray(function (err, result) {
-        if (err) throw err;
-        if (result) {
-          res.send({ hazards: JSON.stringify(result) });
-        } else {
-          console.log(`No hazards found.`);
-          res.send("no hazards found");
-        }
-        //console.log(`-------------------`);
-        db.close();
-      });
+    if (hazardId) {
+      const hazard = await dbo
+        .collection("hazards")
+        .findOne(ObjectId(hazardId));
+      //console.log("hazard", JSON.stringify(hazard));
+      res.send({ hazards: JSON.stringify(hazard) });
+      db.close();
+    } else {
+      await dbo
+        .collection("hazards")
+        .find({})
+        .toArray(function (err, result) {
+          if (err) throw err;
+          if (result) {
+            //console.log("result", result);
+            res.send({ hazards: JSON.stringify(result) });
+          } else {
+            console.log(`No hazards found.`);
+            res.send("no hazards found");
+          }
+          //console.log(`-------------------`);
+          db.close();
+        });
+    }
   });
 }

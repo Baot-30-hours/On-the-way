@@ -3,3 +3,9 @@
   width: 850px;
   position: relative;
 }
+
+.ui.button.basic.link,
+.ui.button.basic.link:hover,
+.ui.button.basic.link:focus {
+  box-shadow: 0 0 !important;
+}
