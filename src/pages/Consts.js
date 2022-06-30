@@ -1,8 +1,8 @@
 export const HazardTypes = [
-  { key: "1", text: "Road block", value: "roadblock" },
-  { key: "2", text: "Road side", value: "roadside" },
-  { key: "3", text: "Lost and Founds", value: "lostandfounds" },
-  { key: "5", text: "Other", value: "other" },
+  { key: "1", text: "Road Block", value: "roadblock" },
+  { key: "2", text: "Road Side", value: "roadside" },
+  { key: "3", text: "Lost And Founds", value: "lostandfounds" },
+  { key: "4", text: "Other", value: "other" },
 ];
 
 export const RoadblockTypes = [
@@ -18,7 +18,7 @@ export const RoadblockTypes = [
 
 export const RoadsideTypes = [
   { key: "1", text: "Police", value: "police" },
-  { key: "2", text: "Wild Animal", value: "wildAnimal" },
+  { key: "2", text: "Wild Animal", value: "wildanimal" },
 ];
 
 export const LostAndFoundsTypes = [

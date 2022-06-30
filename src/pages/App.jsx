@@ -8,7 +8,9 @@ import CreateUser from "./Register";
 import HazardList from "./HazardList";
 import BackendTest from "./BackendTest";
 import RegisterOptimize from "./RegisterOptimize";
-import FetchData from "./NewBoard"
+import FetchData from "./NewBoard";
+import HazardDetails from "./HazardDetails";
+
 export default function App() {
   // Google Maps Platform API Key
   // AIzaSyBtUSAW7ssnBNngTj4Q7X076cyRoCHtd94
@@ -19,6 +21,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="createhazard" element={<CreateHazard />} />
           <Route path="hazardlist" element={<HazardList />} />
+          <Route path="hazarddetails" element={<HazardDetails />} />
           <Route path="register" element={<CreateUser />} />
           <Route path="log-in" element={<RegisterOptimize type="log in" />} />
           <Route path="sign-up" element={<RegisterOptimize type="sign up" />} />

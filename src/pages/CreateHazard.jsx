@@ -23,11 +23,11 @@ const CreateHazard = () => {
 
   const [formInfo, setFormInfo] = useState({
     username: "logged_user", // need to take from logged-in user info
-    hazardType: '',
-    hazardSubType: '',
-    hazardDetails: '',
-    hazardLocation: '',
-    hazardLocationText: '',
+    hazardType: "",
+    hazardSubType: "",
+    hazardDetails: "",
+    hazardLocation: "",
+    hazardLocationText: "",
     hazardFiles: null,
     hazardDT: timeInfo.now,
     hazardPublishDT: timeInfo.now,
@@ -49,7 +49,7 @@ const CreateHazard = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log("submit ", formInfo)
+    console.log("submit ", formInfo);
     e.preventDefault();
 
     const data = new FormData();
@@ -69,7 +69,8 @@ const CreateHazard = () => {
     if (formInfo.hazardFiles != null) {
       for (var i = 0; i < formInfo.hazardFiles.length; i++) {
         data.append("file", formInfo.hazardFiles[i]);
-      }}
+      }
+    }
 
     await fetch("/api/createhazard", {
       method: "POST",
@@ -86,7 +87,7 @@ const CreateHazard = () => {
 
   return (
     <div className="log-in">
-      <Form >
+      <Form>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
           <Form.Select
@@ -170,9 +171,9 @@ const CreateHazard = () => {
         <Divider horizontal>*</Divider>
         <Form.Input
           type="file"
-          label="Upload a picture or a video: "
+          label="Upload up to 5 images/videos:"
           name="hazardFiles"
-          accept=".jpg,.png,.jpeg"
+          accept="image/*,.mp4"
           multiple
           onChange={(e) => handleFileChange(e)}
         />
@@ -293,14 +294,17 @@ const CreateHazard = () => {
           }
         />
         <Divider horizontal>*</Divider>
-        <Button 
-        fluid
-        type="submit" 
-        color="blue"
-        disabled={
-          !formInfo.hazardType
-          || !formInfo.hazardSubType}
-        onClick={handleSubmit}>
+        <Button
+          fluid
+          type="submit"
+          color="blue"
+          disabled={
+            !formInfo.hazardType ||
+            (formInfo.hazardType != "other" && !formInfo.hazardSubType) ||
+            (formInfo.hazardFiles != null && formInfo.hazardFiles.length > 5)
+          }
+          onClick={handleSubmit}
+        >
           Create
         </Button>
       </Form>
