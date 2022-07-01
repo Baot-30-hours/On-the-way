@@ -123,7 +123,7 @@ const FormCreateUser = () => {
           {/* אותיות ומקף ואורך 20*/}
           <Form.Input
             fluid
-            className={formErrors && formErrors.lastName ? 'form-control error' : 'form-control'}
+            className={'form-control'}
             label='First name *'
             name='firstName'
             id='firstName'
@@ -137,7 +137,7 @@ const FormCreateUser = () => {
           {/* אותיות ומקף ואורך 30*/}
           <Form.Input
             fluid
-            className={formErrors && formErrors.lastName ? 'form-control error' : 'form-control'}
+            className={'form-control'}
             label='Last name *'
             name='lastName'
             if='lastName'
@@ -151,7 +151,7 @@ const FormCreateUser = () => {
         {/* אורך 20 */}
         <Form.Input
           fluid
-          className={formErrors && formErrors.nickName ? 'form-control error' : 'form-control'}
+          className={'form-control'}
           label='Nickname'
           name='nickName'
           id='nickName'
