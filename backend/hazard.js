@@ -44,6 +44,11 @@ module.exports = async function (app) {
   });
 
   await app.get("/api/gethazards", (req, res) => {
+    app.use(
+      "/public/uploaded",
+      express.static(__dirname + "/public/uploaded/")
+    );
+
     getHazards(req, res);
   });
 
