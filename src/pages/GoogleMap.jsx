@@ -82,12 +82,13 @@ const SimpleMap = () => {
   const [markers, setMarkers] = useState([])
   const [bounds, setBounds] = useState(null)
   const [searchBox, setSearchBox] = useState(null)
+  const [mapZoom, setMapZoom] = useState(5)
 
   const onMapLoad = map => {
     navigator?.geolocation.getCurrentPosition(
       ({ coords: { latitude: lat, longitude: lng } }) => {
         const pos = { lat, lng };
-        setCurrentLocation({ currentLocation: pos });
+        setCurrentLocation(pos);
       }
     );
     google.maps.event.addListener(map, "bounds_changed", () => {
@@ -102,14 +103,12 @@ const SimpleMap = () => {
   };
 
   const onPlacesChanged = () => {
-    markerArray = [];
     let results = searchBox.getPlaces();
     for (let i = 0; i < results.length; i++) {
       let place = results[i].geometry.location;
-      markerArray.push(place);
+      setCurrentLocation(place);
+      setMapZoom(17);
     }
-    setMarkers(markerArray);
-    console.log(markerArray);
   };
 
   return (
@@ -130,7 +129,7 @@ const SimpleMap = () => {
       <div>
         <GoogleMap
           center={currentLocation}
-          zoom={5}
+          zoom={mapZoom}
           onLoad={map => onMapLoad(map)}
           mapContainerStyle={{ height: "400px", width: "800px" }}
         >
