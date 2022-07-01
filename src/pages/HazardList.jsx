@@ -54,14 +54,15 @@ const HazardList = () => {
           locationText: parsed[i].locationText,
           publishDT: parsed[i].publishDT,
           dt: parsed[i].dt,
-          image: (
+          image: parsed[i].file1 ? (
             <Image
               src={images_url + parsed[i].file1}
-              alt="hazard"
               width="100"
               height="100"
               object-fit="cover"
             ></Image>
+          ) : (
+            "<<no image>>"
           ),
           moreDetails: parsed[i]._id,
         });
