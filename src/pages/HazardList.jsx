@@ -32,12 +32,18 @@ const HazardList = () => {
   };
 
   useEffect(() => {
+
     const fetchData = async () => {
-      const result = await fetch("/api/gethazards");
-      const body = await result.json();
-      let parsed = JSON.parse(body.hazards.replace(/\\/g, ""));
-      let data = [];
-      for (let i = 0; i < parsed.length; i++) {
+    const currentDateAndTime = new Date();
+    const result = await fetch("/api/gethazards");
+    const body = await result.json();
+    let parsed = JSON.parse(body.hazards.replace(/\\/g, ""));
+    let data = [];
+    for (let i = 0; i < parsed.length; i++) {
+      const removeTime= new Date(parsed[i].removeDT).getTime()
+      const publishTime = new Date(parsed[i].publishDT).getTime()
+      const currentTime = currentDateAndTime.getTime() 
+      if (removeTime > currentTime && publishTime <= currentTime){
         data.push({
           username:
             parsed[i].anonymousReport === "true"
@@ -64,10 +70,10 @@ const HazardList = () => {
           ) : (
             "<<no image>>"
           ),
-          moreDetails: parsed[i]._id,
+           moreDetails: parsed[i]._id,
         });
         setHazards(data);
-      }
+      }}
     };
     fetchData();
   }, []);
