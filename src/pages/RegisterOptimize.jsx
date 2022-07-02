@@ -187,7 +187,7 @@ const RegisterOptimize = ({ type }) => {
                 disabled={
                   !userInfo.email
                   || !userInfo.password}
-                onClick={handleSubmit}>Log In</Button>
+                onClick={handleSubmit}>Sign Up</Button>
               : <Button
                 fluid
                 color="blue"

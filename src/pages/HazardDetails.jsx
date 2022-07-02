@@ -39,21 +39,11 @@ const HazardDetails = () => {
   };
 
   const columns = [];
-  if (formInfo.hazard.file1) {
     columns.push({ accessor: "file1" });
-  }
-  if (formInfo.hazard.file2) {
     columns.push({ accessor: "file2" });
-  }
-  if (formInfo.hazard.file3) {
     columns.push({ accessor: "file3" });
-  }
-  if (formInfo.hazard.file4) {
     columns.push({ accessor: "file4" });
-  }
-  if (formInfo.hazard.file5) {
     columns.push({ accessor: "file5" });
-  }
 
   const files = [
     {
@@ -72,13 +62,13 @@ const HazardDetails = () => {
             }}
             //aspectRatio="21:9"
             //size="large"
-            style={{ width: 150, height: 150 }}
+            style={{ width: 200, height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file1}
-            width="150"
-            height="150"
+            width="200"
+            height="200"
             object-fit="cover"
           ></Image>
         )
@@ -100,13 +90,13 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 150, height: 150 }}
+            style={{ width: 200, height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file2}
-            width="150"
-            height="150"
+            width="200"
+            height="200"
             object-fit="cover"
           ></Image>
         )
@@ -128,13 +118,13 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 150, height: 150 }}
+            style={{ width: 200, height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file3}
-            width="150"
-            height="150"
+            width="200"
+            height="200"
             object-fit="cover"
           ></Image>
         )
@@ -156,13 +146,13 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 150, height: 150 }}
+            style={{ width: 200, height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file4}
-            width="150"
-            height="150"
+            width="200"
+            height="200"
             object-fit="cover"
           ></Image>
         )
@@ -185,13 +175,13 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 150, height: 150 }}
+            style={{ width: 200, height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file5}
-            width="150"
-            height="150"
+            width="200"
+            height="200"
             object-fit="cover"
           ></Image>
         )
@@ -203,7 +193,7 @@ const HazardDetails = () => {
 
   return (
     <div>
-      <Grid style={{ padding: 50 }}>
+      <Grid style={{ padding: 30, overflow: "auto" }}>
         <Grid.Row>
           <Grid.Column>
             <Item.Group divided>
@@ -262,7 +252,10 @@ const HazardDetails = () => {
 
                   <Item.Extra>
                     <Icon name="map marker alternate" />
-                    {formInfo.hazard.location} - {formInfo.hazard.locationText}
+                    {GlobalFunctions.getLocationDisplayName(
+                      formInfo.hazard.location
+                    )}{" "}
+                    - {formInfo.hazard.locationText}
                   </Item.Extra>
                   {formInfo.hazard.notifyMunicipality === "true" && (
                     <Item.Meta>
@@ -280,12 +273,15 @@ const HazardDetails = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column>
+            <div style={{ width: 750, overflow: "auto" }}>
             <ReactTable
               showPagination={false}
               defaultPageSize={1}
               columns={columns}
               data={files}
+                style={{ width: 1050 }}
             ></ReactTable>
+            </div>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
