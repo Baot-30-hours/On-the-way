@@ -8,14 +8,18 @@ const CreateHazard = () => {
   const currentDateAndTime = new Date();
   const navigate = useNavigate();
 
+  const [formErrors, setFormErrors] = useState({
+    hazardRemoveDT: "",
+    hazardPublishDT: "",
+  });
+
   const [timeInfo, setTimeInfo] = useState({
     hazardDateTimeType: "dt_now",
     publishDateTimeType: "dt_now",
     removeDateTimeType: "dt_tomorrow",
-    now: currentDateAndTime.toLocaleString(),
+    now: currentDateAndTime,
     tomorrow: new Date(
-      currentDateAndTime.getTime() + 60 * 60 * 24 * 1000
-    ).toLocaleString(),
+      currentDateAndTime.getTime() + 60 * 60 * 24 * 1000),
   });
 
   const handleTimeInfoChange = (e, { name, value }) =>
@@ -36,11 +40,48 @@ const CreateHazard = () => {
     anonymousReport: false,
     //hazardId: "",
   });
+  const handleTimeFormInfoChange = (e, { name, value }) =>{
+    console.log(formErrors)
+    let currentFormErrors = formErrors;
+    switch (name) {
+      case "hazardRemoveDT":
+      case "hazardPublishDT":
+        let valueTime;
+        if ((name==="hazardPublishDT" && timeInfo.publishDateTimeType=== "dt_set") ||
+            (name==="hazardRemoveDT" && timeInfo.removeDateTimeType=== "dt_set")){
+          const splitDateTime=value.split("-")
+          const yaerAndTime = splitDateTime[2].split(" ")
+          valueTime = new Date(yaerAndTime[0]+"-"+splitDateTime[1]+"-"+ splitDateTime[0]+"T"+ yaerAndTime[1])
+        }
+        else{
+          valueTime = new Date(value)
+        }
+        if (valueTime.getTime() < currentDateAndTime.getTime()) {
+          currentFormErrors[name] = 'error';
+        }
+        else {
+          currentFormErrors[name]="";
+          setFormInfo({ ...formInfo, [name]: valueTime });
+        }
+        break;
+      case "hazdardDT":
+        valueTime = new Date(value)
+        setFormInfo({ ...formInfo, [name]: valueTime });
+        break;
+      default:
+        break;
+    }
+    setFormErrors(currentFormErrors);
+    //setFormInfo({ ...formInfo, [name]: valueTime });  
+  }
+  const handleFormInfoChange = (e, { name, value }) =>{
+     setFormInfo({ ...formInfo, [name]: value });  
+  }
 
-  const handleFormInfoChange = (e, { name, value }) =>
-    setFormInfo({ ...formInfo, [name]: value });
+  
 
   const handleCheckedChange = (e, { name, value }) => {
+
     setFormInfo({ ...formInfo, [name]: !value });
   };
 
@@ -205,7 +246,7 @@ const CreateHazard = () => {
               iconPosition="left"
               value={formInfo.hazardDT}
               onChange={(e, { name, value }) =>
-                handleFormInfoChange(e, { name, value })
+                handleTimeFormInfoChange(e, { name, value })
               }
             />
           )}
@@ -233,11 +274,12 @@ const CreateHazard = () => {
           {timeInfo.publishDateTimeType === "dt_set" && (
             <DateTimeInput
               name="hazardPublishDT"
+              className={formErrors && formErrors.hazardPublishDT ? 'form-control error' : 'form-control'}
               placeholder="Select publish date and time"
               iconPosition="left"
               value={formInfo.hazardPublishDT}
               onChange={(e, { name, value }) =>
-                handleFormInfoChange(e, { name, value })
+                handleTimeFormInfoChange(e, { name, value })
               }
             />
           )}
@@ -245,7 +287,7 @@ const CreateHazard = () => {
         <Form.Group inline>
           <label>Remove time</label>
           <Form.Radio
-            label="System Default (24 hours)"
+            label="Default (24 hours)"
             value="dt_tomorrow"
             name="removeDateTimeType"
             checked={timeInfo.removeDateTimeType === "dt_tomorrow"}
@@ -264,16 +306,32 @@ const CreateHazard = () => {
           />
           {timeInfo.removeDateTimeType === "dt_set" && (
             <DateTimeInput
+              className={formErrors && formErrors.hazardRemoveDT ? 'form-control error' : 'form-control'}
               name="hazardRemoveDT"
               placeholder="Select date and time to remove"
               iconPosition="left"
               value={formInfo.hazardRemoveDT}
               onChange={(e, { name, value }) =>
-                handleFormInfoChange(e, { name, value })
+                handleTimeFormInfoChange(e, { name, value })
               }
             />
           )}
         </Form.Group>
+        {formErrors.hazardRemoveDT !== "" && timeInfo.removeDateTimeType === "dt_set" && (
+          <Message
+            icon= "exclamation"
+            header = "Error"
+            content = "Remove time should be in the future."
+          />
+          )}
+        {formErrors.hazardPublishDT !== "" && timeInfo.publishDateTimeType === "dt_set"&& (
+          <Message
+            icon= "exclamation"
+            header = "Error"
+            content = "Publish time should now or be in the future."
+          />
+          )}
+
         <Divider horizontal>*</Divider>
         <Form.Checkbox
           toggle
@@ -284,7 +342,7 @@ const CreateHazard = () => {
             handleCheckedChange(e, { name, value })
           }
         />
-        <Form.Checkbox
+        <Form.Checkbox  
           toggle
           label="Anonymous report"
           name="anonymousReport"
@@ -300,8 +358,10 @@ const CreateHazard = () => {
           color="blue"
           disabled={
             !formInfo.hazardType ||
-            (formInfo.hazardType != "other" && !formInfo.hazardSubType) ||
-            (formInfo.hazardFiles != null && formInfo.hazardFiles.length > 5)
+            formErrors.hazardRemoveDT || 
+            formErrors.hazardPublishDT ||
+            (formInfo.hazardType !== "other" && !formInfo.hazardSubType) ||
+            (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 5)
           }
           onClick={handleSubmit}
         >

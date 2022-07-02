@@ -32,40 +32,49 @@ const HazardList = () => {
   };
 
   useEffect(() => {
+
     const fetchData = async () => {
+      const currentDateAndTime = new Date();
       const result = await fetch("/api/gethazards");
       const body = await result.json();
       let parsed = JSON.parse(body.hazards.replace(/\\/g, ""));
       let data = [];
       for (let i = 0; i < parsed.length; i++) {
-        data.push({
-          username:
-            parsed[i].anonymousReport === "true"
-              ? "Anomymous"
-              : parsed[i].username,
-          type: Consts.HazardTypes.find(
-            (hazard) => hazard.value === parsed[i].type
-          ).text,
-          subType: getSubTypeDisplayName(parsed[i].type, parsed[i].subType),
-          details: parsed[i].details,
-          location: Consts.Locations.find(
-            (hazard) => hazard.value === parsed[i].location
-          )?.text,
-          locationText: parsed[i].locationText,
-          publishDT: parsed[i].publishDT,
-          dt: parsed[i].dt,
-          image: (
-            <Image
-              src={images_url + parsed[i].file1}
-              alt="hazard"
-              width="100"
-              height="100"
-              object-fit="cover"
-            ></Image>
-          ),
-          moreDetails: parsed[i]._id,
-        });
-        setHazards(data);
+        const removeTime= new Date(parsed[i].removeDT).getTime()
+        const publishTime = new Date(parsed[i].publishDT).getTime()
+        const currentTime = currentDateAndTime.getTime() 
+        console.log ("publish time: ", publishTime,"remove time: ", removeTime, "current time: ", currentTime)
+        console.log ("publish time: ",parsed[i].publishDT,"remove time: ", new Date(parsed[i].removeDT), "current time: ", currentDateAndTime)
+        if (removeTime > currentTime && publishTime <= currentTime){
+          data.push({
+            username:
+              parsed[i].anonymousReport === "true"
+                ? "Anomymous"
+                : parsed[i].username,
+            type: Consts.HazardTypes.find(
+              (hazard) => hazard.value === parsed[i].type
+            ).text,
+            subType: getSubTypeDisplayName(parsed[i].type, parsed[i].subType),
+            details: parsed[i].details,
+            location: Consts.Locations.find(
+              (hazard) => hazard.value === parsed[i].location
+            )?.text,
+            locationText: parsed[i].locationText,
+            publishDT: parsed[i].publishDT,
+            dt: parsed[i].dt,
+            image: (
+              <Image
+                src={images_url + parsed[i].file1}
+                alt="hazard"
+                width="100"
+                height="100"
+                object-fit="cover"
+              ></Image>
+            ),
+            moreDetails: parsed[i]._id,
+          });
+          setHazards(data);
+        }
       }
     };
     fetchData();
