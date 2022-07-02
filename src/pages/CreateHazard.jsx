@@ -46,7 +46,7 @@ const CreateHazard = () => {
     switch (name) {
       case "hazardRemoveDT":
       case "hazardPublishDT":
-        let valueTime;
+        var valueTime;
         if ((name==="hazardPublishDT" && timeInfo.publishDateTimeType=== "dt_set") ||
             (name==="hazardRemoveDT" && timeInfo.removeDateTimeType=== "dt_set")){
           const splitDateTime=value.split("-")
@@ -61,24 +61,20 @@ const CreateHazard = () => {
         }
         else {
           currentFormErrors[name]="";
-          setFormInfo({ ...formInfo, [name]: valueTime });
         }
         break;
       case "hazdardDT":
         valueTime = new Date(value)
-        setFormInfo({ ...formInfo, [name]: valueTime });
         break;
       default:
         break;
     }
     setFormErrors(currentFormErrors);
-    //setFormInfo({ ...formInfo, [name]: valueTime });  
+    setFormInfo({ ...formInfo, [name]: valueTime });  
   }
   const handleFormInfoChange = (e, { name, value }) =>{
      setFormInfo({ ...formInfo, [name]: value });  
   }
-
-  
 
   const handleCheckedChange = (e, { name, value }) => {
 
