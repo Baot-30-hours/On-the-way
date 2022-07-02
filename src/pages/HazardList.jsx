@@ -43,8 +43,6 @@ const HazardList = () => {
       const removeTime= new Date(parsed[i].removeDT).getTime()
       const publishTime = new Date(parsed[i].publishDT).getTime()
       const currentTime = currentDateAndTime.getTime() 
-      console.log ("publish time: ", publishTime,"remove time: ", removeTime, "current time: ", currentTime)
-      console.log ("publish time: ",parsed[i].publishDT,"remove time: ", new Date(parsed[i].removeDT), "current time: ", currentDateAndTime)
       if (removeTime > currentTime && publishTime <= currentTime){
         data.push({
           username:
