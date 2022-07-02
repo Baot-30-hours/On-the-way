@@ -40,7 +40,6 @@ const HazardList = () => {
       let parsed = JSON.parse(body.hazards.replace(/\\/g, ""));
       let data = [];
       for (let i = 0; i < parsed.length; i++) {
-<<<<<<< HEAD
         const removeTime= new Date(parsed[i].removeDT).getTime()
         const publishTime = new Date(parsed[i].publishDT).getTime()
         const currentTime = currentDateAndTime.getTime() 
@@ -63,51 +62,20 @@ const HazardList = () => {
             locationText: parsed[i].locationText,
             publishDT: parsed[i].publishDT,
             dt: parsed[i].dt,
-            image: (
+            image: parsed[i].file1 ? (
               <Image
                 src={images_url + parsed[i].file1}
-                alt="hazard"
                 width="100"
                 height="100"
                 object-fit="cover"
               ></Image>
+            ) : (
+              "<<no image>>"
             ),
             moreDetails: parsed[i]._id,
           });
           setHazards(data);
         }
-=======
-        data.push({
-          username:
-            parsed[i].anonymousReport === "true"
-              ? "Anomymous"
-              : parsed[i].username,
-          type: Consts.HazardTypes.find(
-            (hazard) => hazard.value === parsed[i].type
-          ).text,
-          subType: getSubTypeDisplayName(parsed[i].type, parsed[i].subType),
-          details: parsed[i].details,
-          location: Consts.Locations.find(
-            (hazard) => hazard.value === parsed[i].location
-          )?.text,
-          locationText: parsed[i].locationText,
-          publishDT: parsed[i].publishDT,
-          dt: parsed[i].dt,
-          image: parsed[i].file1 ? (
-            <Image
-              src={images_url + parsed[i].file1}
-              width="100"
-              height="100"
-              object-fit="cover"
-            ></Image>
-          ) : (
-            "<<no image>>"
-          ),
-          moreDetails: parsed[i]._id,
-        });
-        setHazards(data);
->>>>>>> 73f28ef32347856f5a8dfa17268b474047505ac7
-      }
     };
     fetchData();
   }, []);
