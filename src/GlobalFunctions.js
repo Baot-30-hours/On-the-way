@@ -19,11 +19,9 @@ export const getSubTypeDisplayName = (type, subType) => {
 };
 
 export const getTypeDisplayName = (type) => {
-  return type;
-  //return Consts.HazardTypes.find((hazard) => hazard.value === type).text;
+  return Consts.HazardTypes.find((hazard) => hazard.value === type)?.text;
 };
 
 export const getLocationDisplayName = (location) => {
-  return location;
-  //return Consts.Locations.find((hazard) => hazard.value === location).text;
+  return Consts.Locations.find((hazard) => hazard.value === location)?.text;
 };

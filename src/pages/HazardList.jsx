@@ -64,7 +64,6 @@ const HazardList = () => {
             <Image
               src={images_url + parsed[i].file1}
               width="100"
-              height="100"
               object-fit="cover"
             ></Image>
           ) : (
