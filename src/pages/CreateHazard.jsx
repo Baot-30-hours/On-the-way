@@ -4,6 +4,8 @@ import { Form, Divider, Message, Button } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
 import "../css/LogIn.css";
+import Map from "./GoogleMap";
+
 const CreateHazard = () => {
   const currentDateAndTime = new Date();
   const navigate = useNavigate();
@@ -87,6 +89,7 @@ const CreateHazard = () => {
 
   return (
     <div className="log-in">
+           <Map />
       <Form>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">

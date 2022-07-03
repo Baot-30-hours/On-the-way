@@ -3,7 +3,7 @@ import { Button } from 'semantic-ui-react'
 import "../css/App.css";
 import '../css/Home.css';
 import { useNavigate } from "react-router-dom";
-import SimpleMap from "./GoogleMap";
+import Map from "./GoogleMap";
 import { LoadScript } from "@react-google-maps/api";
 
 
@@ -38,7 +38,7 @@ export default function Home() {
         </div>
       </div>
       <LoadScript googleMapsApiKey={key} libraries={lib} id={id}>
-        <SimpleMap />
+        <Map />
       </LoadScript>
       {/* <iframe className="live-map" src="https://www5.tel-aviv.gov.il/TlvForms/106plus/" width={1000} height={500} ></iframe> */}
     </div>

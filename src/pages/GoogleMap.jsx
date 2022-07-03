@@ -74,15 +74,17 @@
 import React, { useState } from "react";
 import '../css/GoogleMap.css';
 
-import { GoogleMap, StandaloneSearchBox, Marker } from "@react-google-maps/api";
+import { GoogleMap, StandaloneSearchBox, Marker, withScriptjs, withGoogleMap } from "@react-google-maps/api";
 
 let markerArray = [];
-const SimpleMap = () => {
+const Map = () => {
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 })
-  const [markers, setMarkers] = useState([])
+  //const [markers, setMarkers] = useState(null)
+  const [marker, setMarker] = useState(null)
   const [bounds, setBounds] = useState(null)
   const [searchBox, setSearchBox] = useState(null)
-  const [mapZoom, setMapZoom] = useState(5)
+  const [mapZoom, setMapZoom] = useState(17)
+  const [isMarkerShown, setIsMarkerShown] = useState(false)
 
   const onMapLoad = map => {
     navigator?.geolocation.getCurrentPosition(
@@ -103,13 +105,27 @@ const SimpleMap = () => {
   };
 
   const onPlacesChanged = () => {
+  
     let results = searchBox.getPlaces();
     for (let i = 0; i < results.length; i++) {
       let place = results[i].geometry.location;
       setCurrentLocation(place);
-      setMapZoom(17);
+      setMapZoom(19);
+      // setMarkers([...markers, place]);
+      setMarker(place);
     }
   };
+
+  // delayedShowMarker = () => {
+  //   setTimeout(() => {
+  //     setIsMarkerShown(true)
+  //   }, 3000)
+  // }
+
+  // const handleMarkerClick = () => {
+  //   setIsMarkerShown(false);
+  //   //delayedShowMarker()
+  // };
 
   return (
     <div className="map-wrapper">
@@ -131,18 +147,25 @@ const SimpleMap = () => {
           center={currentLocation}
           zoom={mapZoom}
           onLoad={map => onMapLoad(map)}
+          // onMarkerClick={this.handleMarkerClick}
           mapContainerStyle={{ height: "400px", width: "800px" }}
         >
-          {markers.map((mark, index) => (
-            <Marker key={index} position={mark} />
-          ))}
+          {/* {markers.map((mark, index) => (
+            <Marker key={index} position={mark} 
+            // onClick={props.onMarkerClick}
+            />
+          ))} */}
+
+       
+           {marker &&  <Marker position={marker} />} 
+        
         </GoogleMap>
       </div>
     </div>
   );
 }
 
-export default SimpleMap;
+export default Map;
 
 // 1. בחירת נקודה בעת יצירת התראה - רותם
 // 2. חיפוש על גבי המפה - סהר
