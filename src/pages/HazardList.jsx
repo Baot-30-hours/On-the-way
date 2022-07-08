@@ -5,6 +5,7 @@ import "../css/HazardList.css";
 import * as Consts from "./Consts.js";
 import { useNavigate } from "react-router-dom";
 import { Button, Image } from "semantic-ui-react";
+import Moment from "moment";
 
 const images_url = "http://localhost:5000/public/uploaded/";
 
@@ -32,7 +33,7 @@ const HazardList = () => {
   };
 
   useEffect(() => {
-
+    
     const fetchData = async () => {
     const currentDateAndTime = new Date();
     const result = await fetch("/api/gethazards");
@@ -40,10 +41,10 @@ const HazardList = () => {
     let parsed = JSON.parse(body.hazards.replace(/\\/g, ""));
     let data = [];
     for (let i = 0; i < parsed.length; i++) {
-      const removeTime= new Date(parsed[i].removeDT).getTime()
-      const publishTime = new Date(parsed[i].publishDT).getTime()
-      const currentTime = currentDateAndTime.getTime() 
-      if (removeTime > currentTime && publishTime <= currentTime){
+        const removeTime = new Date(parsed[i].removeDT).getTime();
+        const publishTime = new Date(parsed[i].publishDT).getTime();
+        const currentTime = currentDateAndTime.getTime();
+        if (removeTime > currentTime && publishTime <= currentTime) {
         data.push({
           username:
             parsed[i].anonymousReport === "true"
@@ -58,12 +59,12 @@ const HazardList = () => {
             (hazard) => hazard.value === parsed[i].location
           )?.text,
           locationText: parsed[i].locationText,
-          publishDT: parsed[i].publishDT,
-          dt: parsed[i].dt,
+            publishDT: Moment(parsed[i].publishDT).format("DD/MM/YY HH:mm"),
+            dt: Moment(parsed[i].dt).format("DD/MM/YY HH:mm"),
           image: parsed[i].file1 ? (
             <Image
               src={images_url + parsed[i].file1}
-              width="100"
+                height="100"
               object-fit="cover"
             ></Image>
           ) : (
@@ -72,7 +73,8 @@ const HazardList = () => {
            moreDetails: parsed[i]._id,
         });
         setHazards(data);
-      }}
+        }
+      }
     };
     fetchData();
   }, []);

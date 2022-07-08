@@ -5,7 +5,7 @@ import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
 import LoadingSpinner from "./LoadingSpinner";
 import "../css/LogIn.css";
-import "../css/LoadingSpinner.css"
+import "../css/LoadingSpinner.css";
 import Map from "./GoogleMap";
 
 const CreateHazard = () => {
@@ -23,8 +23,7 @@ const CreateHazard = () => {
     publishDateTimeType: "dt_now",
     removeDateTimeType: "dt_tomorrow",
     now: currentDateAndTime,
-    tomorrow: new Date(
-      currentDateAndTime.getTime() + 60 * 60 * 24 * 1000),
+    tomorrow: new Date(currentDateAndTime.getTime() + 60 * 60 * 24 * 1000),
   });
 
   const handleTimeInfoChange = (e, { name, value }) =>
@@ -45,44 +44,53 @@ const CreateHazard = () => {
     anonymousReport: false,
     //hazardId: "",
   });
-  const handleTimeFormInfoChange = (e, { name, value }) =>{
-    console.log(formErrors)
+  const handleTimeFormInfoChange = (e, { name, value }) => {
+    console.log(formErrors);
     let currentFormErrors = formErrors;
     switch (name) {
       case "hazardRemoveDT":
       case "hazardPublishDT":
         var valueTime;
-        if ((name==="hazardPublishDT" && timeInfo.publishDateTimeType=== "dt_set") ||
-            (name==="hazardRemoveDT" && timeInfo.removeDateTimeType=== "dt_set")){
-          const splitDateTime=value.split("-")
-          const yaerAndTime = splitDateTime[2].split(" ")
-          valueTime = new Date(yaerAndTime[0]+"-"+splitDateTime[1]+"-"+ splitDateTime[0]+"T"+ yaerAndTime[1])
-        }
-        else{
-          valueTime = new Date(value)
+        if (
+          (name === "hazardPublishDT" &&
+            timeInfo.publishDateTimeType === "dt_set") ||
+          (name === "hazardRemoveDT" &&
+            timeInfo.removeDateTimeType === "dt_set")
+        ) {
+          const splitDateTime = value.split("-");
+          const yaerAndTime = splitDateTime[2].split(" ");
+          valueTime = new Date(
+            yaerAndTime[0] +
+              "-" +
+              splitDateTime[1] +
+              "-" +
+              splitDateTime[0] +
+              "T" +
+              yaerAndTime[1]
+          );
+        } else {
+          valueTime = new Date(value);
         }
         if (valueTime.getTime() < currentDateAndTime.getTime()) {
-          currentFormErrors[name] = 'error';
-        }
-        else {
-          currentFormErrors[name]="";
+          currentFormErrors[name] = "error";
+        } else {
+          currentFormErrors[name] = "";
         }
         break;
       case "hazdardDT":
-        valueTime = new Date(value)
+        valueTime = new Date(value);
         break;
       default:
         break;
     }
     setFormErrors(currentFormErrors);
-    setFormInfo({ ...formInfo, [name]: valueTime });  
-  }
-  const handleFormInfoChange = (e, { name, value }) =>{
-     setFormInfo({ ...formInfo, [name]: value });  
-  }
+    setFormInfo({ ...formInfo, [name]: valueTime });
+  };
+  const handleFormInfoChange = (e, { name, value }) => {
+    setFormInfo({ ...formInfo, [name]: value });
+  };
 
   const handleCheckedChange = (e, { name, value }) => {
-
     setFormInfo({ ...formInfo, [name]: !value });
   };
 
@@ -90,13 +98,11 @@ const CreateHazard = () => {
     setFormInfo({ ...formInfo, ["hazardFiles"]: e.target.files });
   };
 
-  const delay = ms => new Promise(
-    resolve => setTimeout(resolve, ms)
-  );
-  
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const handleSubmit = async (e) => {
     setIsLoading(true);
-   
+
     await delay(500);
     e.preventDefault();
 
@@ -135,7 +141,7 @@ const CreateHazard = () => {
 
   return (
     <div className="log-in">
-           
+      {/* <Map /> */}
       <Form>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
@@ -282,7 +288,11 @@ const CreateHazard = () => {
           {timeInfo.publishDateTimeType === "dt_set" && (
             <DateTimeInput
               name="hazardPublishDT"
-              className={formErrors && formErrors.hazardPublishDT ? 'form-control error' : 'form-control'}
+              className={
+                formErrors && formErrors.hazardPublishDT
+                  ? "form-control error"
+                  : "form-control"
+              }
               placeholder="Select publish date and time"
               iconPosition="left"
               value={formInfo.hazardPublishDT}
@@ -314,7 +324,11 @@ const CreateHazard = () => {
           />
           {timeInfo.removeDateTimeType === "dt_set" && (
             <DateTimeInput
-              className={formErrors && formErrors.hazardRemoveDT ? 'form-control error' : 'form-control'}
+              className={
+                formErrors && formErrors.hazardRemoveDT
+                  ? "form-control error"
+                  : "form-control"
+              }
               name="hazardRemoveDT"
               placeholder="Select date and time to remove"
               iconPosition="left"
@@ -325,19 +339,21 @@ const CreateHazard = () => {
             />
           )}
         </Form.Group>
-        {formErrors.hazardRemoveDT !== "" && timeInfo.removeDateTimeType === "dt_set" && (
-          <Message
-            icon= "exclamation"
-            header = "Error"
-            content = "Remove time should be in the future."
-          />
+        {formErrors.hazardRemoveDT !== "" &&
+          timeInfo.removeDateTimeType === "dt_set" && (
+            <Message
+              icon="exclamation"
+              header="Error"
+              content="Remove time should be in the future."
+            />
           )}
-        {formErrors.hazardPublishDT !== "" && timeInfo.publishDateTimeType === "dt_set"&& (
-          <Message
-            icon= "exclamation"
-            header = "Error"
-            content = "Publish time should now or be in the future."
-          />
+        {formErrors.hazardPublishDT !== "" &&
+          timeInfo.publishDateTimeType === "dt_set" && (
+            <Message
+              icon="exclamation"
+              header="Error"
+              content="Publish time should now or be in the future."
+            />
           )}
 
         <Divider horizontal>*</Divider>
@@ -350,7 +366,7 @@ const CreateHazard = () => {
             handleCheckedChange(e, { name, value })
           }
         />
-        <Form.Checkbox  
+        <Form.Checkbox
           toggle
           label="Anonymous report"
           name="anonymousReport"
@@ -360,24 +376,26 @@ const CreateHazard = () => {
           }
         />
         <Divider horizontal>*</Divider>
-        {isLoading ? <LoadingSpinner /> :
-        <Button
-          fluid
-          type="submit"
-          color="blue"
-          disabled={
-            isLoading||
-            !formInfo.hazardType ||
-            formErrors.hazardRemoveDT || 
-            formErrors.hazardPublishDT ||
-            (formInfo.hazardType !== "other" && !formInfo.hazardSubType) ||
-            (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 5)
-          }
-          onClick={handleSubmit}
-        >
-          Create
-        </Button>
-        }
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <Button
+            fluid
+            type="submit"
+            color="blue"
+            disabled={
+              isLoading ||
+              !formInfo.hazardType ||
+              formErrors.hazardRemoveDT ||
+              formErrors.hazardPublishDT ||
+              (formInfo.hazardType !== "other" && !formInfo.hazardSubType) ||
+              (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 5)
+            }
+            onClick={handleSubmit}
+          >
+            Create
+          </Button>
+        )}
       </Form>
     </div>
   );
