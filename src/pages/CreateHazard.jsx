@@ -135,7 +135,7 @@ const CreateHazard = () => {
 
   return (
     <div className="log-in">
-           <Map />
+           
       <Form>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
