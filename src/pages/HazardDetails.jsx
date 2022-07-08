@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ReactTable from "react-table-v6";
 import "react-table-v6/react-table.css";
 import * as GlobalFunctions from "../GlobalFunctions.js";
+import Moment from "moment";
 
 const images_url = "http://localhost:5000/public/uploaded/";
 
@@ -39,11 +40,11 @@ const HazardDetails = () => {
   };
 
   const columns = [];
-    columns.push({ accessor: "file1" });
-    columns.push({ accessor: "file2" });
-    columns.push({ accessor: "file3" });
-    columns.push({ accessor: "file4" });
-    columns.push({ accessor: "file5" });
+  columns.push({ accessor: "file1" });
+  columns.push({ accessor: "file2" });
+  columns.push({ accessor: "file3" });
+  columns.push({ accessor: "file4" });
+  columns.push({ accessor: "file5" });
 
   const files = [
     {
@@ -62,12 +63,11 @@ const HazardDetails = () => {
             }}
             //aspectRatio="21:9"
             //size="large"
-            style={{ width: 200, height: 200 }}
+            style={{ height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file1}
-            width="200"
             height="200"
             object-fit="cover"
           ></Image>
@@ -90,12 +90,11 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 200, height: 200 }}
+            style={{ height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file2}
-            width="200"
             height="200"
             object-fit="cover"
           ></Image>
@@ -118,12 +117,11 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 200, height: 200 }}
+            style={{ height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file3}
-            width="200"
             height="200"
             object-fit="cover"
           ></Image>
@@ -146,12 +144,11 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 200, height: 200 }}
+            style={{ height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file4}
-            width="200"
             height="200"
             object-fit="cover"
           ></Image>
@@ -175,12 +172,11 @@ const HazardDetails = () => {
             }}
             aspectRatio="21:9"
             size="large"
-            style={{ width: 200, height: 200 }}
+            style={{ height: 200 }}
           />
         ) : (
           <Image
             src={images_url + formInfo.hazard.file5}
-            width="200"
             height="200"
             object-fit="cover"
           ></Image>
@@ -226,11 +222,11 @@ const HazardDetails = () => {
                   <Item.Description>
                     <b>When: </b>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {formInfo.hazard.dt}
+                    {Moment(formInfo.hazard.dt).format("DD/MM/YY HH:mm")}
                   </Item.Description>
                   <Item.Description>
                     <b>Published:</b> &nbsp;&nbsp;&nbsp;
-                    {formInfo.hazard.publishDT}
+                    {Moment(formInfo.hazard.publishDT).format("DD/MM/YY HH:mm")}
                   </Item.Description>
                   <Item.Description>
                     <b>Published By:</b> &nbsp;&nbsp;&nbsp;
@@ -274,13 +270,13 @@ const HazardDetails = () => {
         <Grid.Row>
           <Grid.Column>
             <div style={{ width: 750, overflow: "auto" }}>
-            <ReactTable
-              showPagination={false}
-              defaultPageSize={1}
-              columns={columns}
-              data={files}
+              <ReactTable
+                showPagination={false}
+                defaultPageSize={1}
+                columns={columns}
+                data={files}
                 style={{ width: 1050 }}
-            ></ReactTable>
+              ></ReactTable>
             </div>
           </Grid.Column>
         </Grid.Row>
