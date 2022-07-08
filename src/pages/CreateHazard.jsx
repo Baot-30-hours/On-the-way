@@ -102,8 +102,8 @@ const CreateHazard = () => {
 
   const handleSubmit = async (e) => {
     setIsLoading(true);
-
-    await delay(500);
+   
+    await delay(400);
     e.preventDefault();
 
     const data = new FormData();

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Divider, Button, Checkbox } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
+import "../css/LoadingSpinner.css";
 import "../css/CreateUser.css";
 
 const FormCreateUser = () => {
@@ -18,6 +20,8 @@ const FormCreateUser = () => {
   const [formErrors, setFormErrors] = useState({});
   const [cities, setCities] = useState([]);
   const [disable, setDisable] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleFormInfoChange = (e, { name, value }) =>
     setUserInfo({ ...userInfo, [name]: value });
@@ -101,7 +105,8 @@ const FormCreateUser = () => {
       userInfo.phone &&
       userInfo.password &&
       userInfo.repeatPassword &&
-      userInfo.terms
+      userInfo.terms &&
+      !isLoading
     ) {
       setDisable(false);
     } else {
@@ -109,7 +114,12 @@ const FormCreateUser = () => {
     }
   };
 
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const handleSubmit = async (e) => {
+    setIsLoading(true);
+    await delay(500);
+
     e.preventDefault();
     setDisable(true);
     console.log("userInfo", userInfo);
@@ -128,7 +138,7 @@ const FormCreateUser = () => {
         password: userInfo.password,
         repeatPassword: userInfo.repeatPassword,
       }),
-    }).then(alert("User created successfully"));
+    });
 
     const body = await response.text();
     if (body) {
@@ -136,6 +146,7 @@ const FormCreateUser = () => {
         `user ${userInfo.firstName} was inserted to the DB with id ${body}`
       );
     }
+    navigate("/");
   };
 
   useEffect(() => {
@@ -286,16 +297,21 @@ const FormCreateUser = () => {
         />
 
         <Divider horizontal>*</Divider>
-        <Button
-          fluid
-          color="blue"
-          type="submit"
-          name="submit"
-          disabled={disable}
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
+
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <Button
+            fluid
+            color="blue"
+            type="submit"
+            name="submit"
+            disabled={disable}
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        )}
 
         <Link to="/log-in">Already have an account? Click here to sign in</Link>
       </Form>
