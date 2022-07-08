@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Checkbox } from 'semantic-ui-react';
+import React, { useState, useEffect } from "react";
+import { Form, Divider, Button, Checkbox } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import '../css/CreateUser.css';
+import "../css/CreateUser.css";
 
 const FormCreateUser = () => {
-  const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', nickName: '', email: '', city: '', password: '', repeatPassword: '', terms: false });
+  const [userInfo, setUserInfo] = useState({
+    firstName: "",
+    lastName: "",
+    uname: "",
+    email: "",
+    phone: "",
+    city: "",
+    password: "",
+    repeatPassword: "",
+    terms: false,
+  });
   const [formErrors, setFormErrors] = useState({});
   const [cities, setCities] = useState([]);
   const [disable, setDisable] = useState(true);
@@ -16,65 +26,93 @@ const FormCreateUser = () => {
     const { name, value } = e.target;
     let currentFormErrors = formErrors;
     switch (name) {
-      case 'firstName':
-      case 'lastName':
-        if (!value || value.length < 3 || value.length > 20 ||
-          !value.match(/^[a-zA-Z-]+$/)) {
-          currentFormErrors[name] = `${e.target.placeholder} should have number of characters between 3-20 and include only letters and dash (-) sign`;
-        }
-        else delete currentFormErrors[name];
+      case "firstName":
+      case "lastName":
+        if (
+          !value ||
+          value.length < 3 ||
+          value.length > 20 ||
+          !value.match(/^[a-zA-Z-]+$/)
+        ) {
+          currentFormErrors[
+            name
+          ] = `${e.target.placeholder} should have number of characters between 3-20 and include only letters and dash (-) sign`;
+        } else delete currentFormErrors[name];
         break;
-      case 'nickName':
+      case "uname":
         if (value.length > 20) {
-          currentFormErrors[name] = `${e.target.placeholder} should have maximum length of 20 characters`;
-        }
-        else delete currentFormErrors[name];
+          currentFormErrors[
+            name
+          ] = `${e.target.placeholder} should have maximum length of 20 characters`;
+        } else delete currentFormErrors[name];
         break;
-      case 'email':
-        const regex = RegExp(/^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+      case "email":
+        const regex = RegExp(
+          /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        );
         if (!regex.test(value)) {
-          currentFormErrors[name] = `email should have the pattern of your@domain.com`;
-        }
-        else delete currentFormErrors[name];
+          currentFormErrors[
+            name
+          ] = `email should have the pattern of your@domain.com`;
+        } else delete currentFormErrors[name];
         break;
-      case 'password':
-        if (!value || value.length < 5 || value.length > 20 ||
-          !value.match(/^[a-zA-Z0-9!@#$%^&*()]+$/)) {
-          currentFormErrors[name] = `${e.target.placeholder} should have number of characters between 5-20 and include only letters, numbers and special carachters above the numbers.`;
-        }
-        else delete currentFormErrors[name];
+      case "phone":
+        if (
+          !value ||
+          value.length < 9 ||
+          value.length > 11 ||
+          !value.match(/^[0-9-]+$/)
+        ) {
+          currentFormErrors[
+            name
+          ] = `${e.target.placeholder} should have number of characters between 9-11 and include only digits and dash (-) sign`;
+        } else delete currentFormErrors[name];
         break;
-      case 'repeatPassword':
+      case "password":
+        if (
+          !value ||
+          value.length < 5 ||
+          value.length > 20 ||
+          !value.match(/^[a-zA-Z0-9!@#$%^&*()]+$/)
+        ) {
+          currentFormErrors[
+            name
+          ] = `${e.target.placeholder} should have number of characters between 5-20 and include only letters, numbers and special carachters above the numbers.`;
+        } else delete currentFormErrors[name];
+        break;
+      case "repeatPassword":
         if (!value || value !== userInfo.password) {
-          currentFormErrors[name] = `This password should be equal to the password from the previous field`;
-        }
-        else delete currentFormErrors[name];
+          currentFormErrors[
+            name
+          ] = `This password should be equal to the password from the previous field`;
+        } else delete currentFormErrors[name];
         break;
       default:
         break;
     }
     setFormErrors(currentFormErrors);
-    if (e.target.type === 'checkbox') {
+    if (e.target.type === "checkbox") {
       userInfo.terms = e.target.checked;
-    }
-    else setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
-    if(Object.keys(currentFormErrors).length === 0 
-          && userInfo.lastName
-          && userInfo.email
-          && userInfo.password
-          && userInfo.repeatPassword
-          && userInfo.terms){
+    } else setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+    if (
+      Object.keys(currentFormErrors).length === 0 &&
+      userInfo.lastName &&
+      userInfo.email &&
+      userInfo.phone &&
+      userInfo.password &&
+      userInfo.repeatPassword &&
+      userInfo.terms
+    ) {
       setDisable(false);
-    }
-    else {
-      setDisable(true)
+    } else {
+      setDisable(true);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setDisable(true)
-    console.log('userInfo', userInfo);
+    setDisable(true);
+    console.log("userInfo", userInfo);
     const response = await fetch("/api/adduser", {
       method: "POST",
       headers: {
@@ -83,28 +121,37 @@ const FormCreateUser = () => {
       body: JSON.stringify({
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
-        nickName: userInfo.nickName,
+        uname: userInfo.uname,
         email: userInfo.email,
+        phone: userInfo.phone,
         city: userInfo.city,
         password: userInfo.password,
-        repeatPassword: userInfo.repeatPassword
+        repeatPassword: userInfo.repeatPassword,
       }),
     }).then(alert("User created successfully"));
 
     const body = await response.text();
     if (body) {
-      console.log(`user ${userInfo.firstName} was inserted to the DB with id ${body}`);
+      console.log(
+        `user ${userInfo.firstName} was inserted to the DB with id ${body}`
+      );
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=100000");
+      const result = await fetch(
+        "https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab&limit=100000"
+      );
       const body = await result.json();
       const cities = body.result.records;
       const newCities = [];
       for (let i in cities) {
-        newCities.push({ key: i, text: cities[i].שם_ישוב, value: cities[i].שם_ישוב });
+        newCities.push({
+          key: i,
+          text: cities[i].שם_ישוב,
+          value: cities[i].שם_ישוב,
+        });
       }
       setCities(newCities);
     };
@@ -117,100 +164,126 @@ const FormCreateUser = () => {
       {/* <a href="#" onclick="signOut();">Sign out</a> */}
       {/* <div class="signInDiv"></div> */}
       {/* <div class="g-signin2" data-onsuccess="onSignIn"></div> */}
-      <Form className='wrapper'>
+      <Form className="wrapper">
         <Divider horizontal>*</Divider>
-        <Form.Group widths='equal'>
+        <Form.Group widths="equal">
           {/* אותיות ומקף ואורך 20*/}
           <Form.Input
             fluid
-            className={'form-control'}
-            label='First name *'
-            name='firstName'
-            id='firstName'
-            placeholder='First name'
-            type='text'
+            className={"form-control"}
+            label="First name *"
+            name="firstName"
+            id="firstName"
+            placeholder="First name"
+            type="text"
             // value={userInfo.firstName}
             onChange={(e) => handleChange(e)}
           />
-          {formErrors && formErrors.firstName && <span className='error'>{formErrors.firstName}</span>}
+          {formErrors && formErrors.firstName && (
+            <span className="error">{formErrors.firstName}</span>
+          )}
           <br />
           {/* אותיות ומקף ואורך 30*/}
           <Form.Input
             fluid
-            className={'form-control'}
-            label='Last name *'
-            name='lastName'
-            if='lastName'
-            type='text'
-            placeholder='Last name'
+            className={"form-control"}
+            label="Last name *"
+            name="lastName"
+            if="lastName"
+            type="text"
+            placeholder="Last name"
             onChange={(e) => handleChange(e)}
           />
-          {formErrors && formErrors.lastName && <span className='error'>{formErrors.lastName}</span>}
+          {formErrors && formErrors.lastName && (
+            <span className="error">{formErrors.lastName}</span>
+          )}
           <br />
         </Form.Group>
         {/* אורך 20 */}
         <Form.Input
           fluid
-          className={'form-control'}
-          label='Nickname'
-          name='nickName'
-          id='nickName'
-          type='text'
-          placeholder='nickname'
+          className={"form-control"}
+          label="User name *"
+          name="uname"
+          id="uname"
+          type="text"
+          placeholder="user name"
           onChange={(e) => handleChange(e)}
         />
-        {formErrors && formErrors.nickName && <span className='error'>{formErrors.nickName}</span>}
+        {formErrors && formErrors.uname && (
+          <span className="error">{formErrors.uname}</span>
+        )}
         <br />
         <Form.Input
           fluid
-          label='Email address *'
-          name='email'
-          id='email'
-          type='email'
-          placeholder='you.email@example.com'
+          label="Email address *"
+          name="email"
+          id="email"
+          type="email"
+          placeholder="you.email@example.com"
           onChange={(e) => handleChange(e)}
         />
-        {formErrors && formErrors.email && <span className='error'>{formErrors.email}</span>}
+        {formErrors && formErrors.email && (
+          <span className="error">{formErrors.email}</span>
+        )}
+        <br />
+        <Form.Input
+          fluid
+          label="Phone number *"
+          name="phone"
+          id="phone"
+          type="text"
+          placeholder="phone number"
+          onChange={(e) => handleChange(e)}
+        />
+        {formErrors && formErrors.phone && (
+          <span className="error">{formErrors.phone}</span>
+        )}
         <br />
         {/* external api */}
         <Form.Select
           fluid
-          label='City'
-          name='city'
-          id='city'
+          label="City"
+          name="city"
+          id="city"
           options={cities}
-          placeholder='city'
+          placeholder="city"
           onChange={(e, { name, value }) =>
             handleFormInfoChange(e, { name, value })
           }
         />
         {/* אותיות מספרים ותווים מיוחדים (מעל המספרים) מינימום 5 מקסימום 20 */}
         <Form.Input
-          label='Password *'
-          name='password'
-          id='password'
-          type='password'
-          placeholder='password'
+          label="Password *"
+          name="password"
+          id="password"
+          type="password"
+          placeholder="password"
           onChange={(e) => handleChange(e)}
         />
-        {formErrors && formErrors.password && <span className='error'>{formErrors.password}</span>}
+        {formErrors && formErrors.password && (
+          <span className="error">{formErrors.password}</span>
+        )}
         <br />
         {/* זהה לסיסמא שמעל */}
         <Form.Input
-          label='Reapet password *'
-          name='repeatPassword'
-          id='repeatPassword'
-          type='password'
-          placeholder='repeat password'
+          label="Reapet password *"
+          name="repeatPassword"
+          id="repeatPassword"
+          type="password"
+          placeholder="repeat password"
           onChange={(e) => handleChange(e)}
         />
-        {formErrors && formErrors.repeatPassword && <span className='error'>{formErrors.repeatPassword}</span>}
+        {formErrors && formErrors.repeatPassword && (
+          <span className="error">{formErrors.repeatPassword}</span>
+        )}
         <br />
         <Checkbox
-          label='Clicking the button I confirm the use of the Terms and Conditions'
-          name='terms'
+          label="Clicking the button I confirm the use of the Terms and Conditions"
+          name="terms"
           onChange={(e) => handleChange(e)}
-          id='terms' />
+          id="terms"
+        />
 
         <Divider horizontal>*</Divider>
         <Button
@@ -219,12 +292,15 @@ const FormCreateUser = () => {
           type="submit"
           name="submit"
           disabled={disable}
-          onClick={handleSubmit}>Submit</Button>
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
 
-        <Link to='/log-in'>Already have an account? Click here to sign in</Link>
+        <Link to="/log-in">Already have an account? Click here to sign in</Link>
       </Form>
     </div>
   );
-}
+};
 
 export default FormCreateUser;
