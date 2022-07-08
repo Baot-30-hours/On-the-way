@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { Form, Divider, Message, Button } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
+import LoadingSpinner from "./LoadingSpinner";
 import "../css/LogIn.css";
+import "../css/LoadingSpinner.css"
 import Map from "./GoogleMap";
 
 const CreateHazard = () => {
   const currentDateAndTime = new Date();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formErrors, setFormErrors] = useState({
     hazardRemoveDT: "",
@@ -87,8 +90,14 @@ const CreateHazard = () => {
     setFormInfo({ ...formInfo, ["hazardFiles"]: e.target.files });
   };
 
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+  
   const handleSubmit = async (e) => {
-    console.log("submit ", formInfo);
+    setIsLoading(true);
+   
+    await delay(500);
     e.preventDefault();
 
     const data = new FormData();
@@ -118,7 +127,7 @@ const CreateHazard = () => {
         //Accept: "application/json",
       },
       body: data,
-    }).then(alert("created successfully"));
+    });
 
     // 👇️ redirect to /hazardlist
     navigate("/hazardlist");
@@ -126,7 +135,7 @@ const CreateHazard = () => {
 
   return (
     <div className="log-in">
-           <Map />
+           
       <Form>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
@@ -351,11 +360,13 @@ const CreateHazard = () => {
           }
         />
         <Divider horizontal>*</Divider>
+        {isLoading ? <LoadingSpinner /> :
         <Button
           fluid
           type="submit"
           color="blue"
           disabled={
+            isLoading||
             !formInfo.hazardType ||
             formErrors.hazardRemoveDT || 
             formErrors.hazardPublishDT ||
@@ -366,6 +377,7 @@ const CreateHazard = () => {
         >
           Create
         </Button>
+        }
       </Form>
     </div>
   );
