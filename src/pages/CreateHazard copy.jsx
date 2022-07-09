@@ -3,17 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Form, Divider, Message, Button } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
-import LoadingSpinner from "./LoadingSpinner";
 import "../css/LogIn.css";
-import "../css/LoadingSpinner.css";
 import Map from "./GoogleMap";
 
 const CreateHazard = () => {
   const currentDateAndTime = new Date();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [searchedLocation, setSearchedLocation] = useState('');
 
   const [formErrors, setFormErrors] = useState({
     hazardRemoveDT: "",
@@ -25,7 +20,8 @@ const CreateHazard = () => {
     publishDateTimeType: "dt_now",
     removeDateTimeType: "dt_tomorrow",
     now: currentDateAndTime,
-    tomorrow: new Date(currentDateAndTime.getTime() + 60 * 60 * 24 * 1000),
+    tomorrow: new Date(
+      currentDateAndTime.getTime() + 60 * 60 * 24 * 1000),
   });
 
   const handleTimeInfoChange = (e, { name, value }) =>
@@ -37,7 +33,7 @@ const CreateHazard = () => {
     hazardSubType: "",
     hazardDetails: "",
     hazardLocation: "",
-    // hazardLocationText: "",
+    hazardLocationText: "",
     hazardFiles: null,
     hazardDT: timeInfo.now,
     hazardPublishDT: timeInfo.now,
@@ -53,34 +49,24 @@ const CreateHazard = () => {
       case "hazardRemoveDT":
       case "hazardPublishDT":
         var valueTime;
-        if (
-          (name === "hazardPublishDT" &&
-            timeInfo.publishDateTimeType === "dt_set") ||
-          (name === "hazardRemoveDT" &&
-            timeInfo.removeDateTimeType === "dt_set")
-        ) {
-          const splitDateTime = value.split("-");
-          const yaerAndTime = splitDateTime[2].split(" ");
-          valueTime = new Date(
-            yaerAndTime[0] +
-              "-" +
-              splitDateTime[1] +
-              "-" +
-              splitDateTime[0] +
-              "T" +
-              yaerAndTime[1]
-          );
-        } else {
-          valueTime = new Date(value);
+        if ((name === "hazardPublishDT" && timeInfo.publishDateTimeType === "dt_set") ||
+          (name === "hazardRemoveDT" && timeInfo.removeDateTimeType === "dt_set")) {
+          const splitDateTime = value.split("-")
+          const yaerAndTime = splitDateTime[2].split(" ")
+          valueTime = new Date(yaerAndTime[0] + "-" + splitDateTime[1] + "-" + splitDateTime[0] + "T" + yaerAndTime[1])
+        }
+        else {
+          valueTime = new Date(value)
         }
         if (valueTime.getTime() < currentDateAndTime.getTime()) {
-          currentFormErrors[name] = "error";
-        } else {
+          currentFormErrors[name] = 'error';
+        }
+        else {
           currentFormErrors[name] = "";
         }
         break;
       case "hazdardDT":
-        valueTime = new Date(value);
+        valueTime = new Date(value)
         break;
       default:
         break;
@@ -88,15 +74,6 @@ const CreateHazard = () => {
     setFormErrors(currentFormErrors);
     setFormInfo({ ...formInfo, [name]: valueTime });
   }
-
-  const handleSearchedLocationChange = (value) => {
-    console.log('formInfo', formInfo);
-    setFormInfo({ ...formInfo, hazardLocation: value });
-    // console.log('formInfo', formInfo);
-    console.log('value', value);
-    console.log('formInfo', formInfo);
-  }
-
   const handleFormInfoChange = (e, { name, value }) => {
     setFormInfo({ ...formInfo, [name]: value });
     console.log('formInfo', formInfo);
@@ -110,12 +87,8 @@ const CreateHazard = () => {
     setFormInfo({ ...formInfo, ["hazardFiles"]: e.target.files });
   };
 
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const handleSubmit = async (e) => {
-    setIsLoading(true);
-   
-    await delay(400);
+    console.log("submit ", formInfo);
     e.preventDefault();
 
     const data = new FormData();
@@ -125,7 +98,7 @@ const CreateHazard = () => {
     data.append("subType", formInfo.hazardSubType);
     data.append("details", formInfo.hazardDetails);
     data.append("location", formInfo.hazardLocation);
-    // data.append("locationText", formInfo.hazardLocationText);
+    data.append("locationText", formInfo.hazardLocationText);
     data.append("dt", formInfo.hazardDT);
     data.append("publishDT", formInfo.hazardPublishDT);
     data.append("removeDT", formInfo.hazardRemoveDT);
@@ -145,7 +118,7 @@ const CreateHazard = () => {
         //Accept: "application/json",
       },
       body: data,
-    });
+    }).then(alert("created successfully"));
 
     // 👇️ redirect to /hazardlist
     navigate("/hazardlist");
@@ -153,7 +126,7 @@ const CreateHazard = () => {
 
   return (
     <div className="create-hazard">
-      <Map className='map' type='createHazard' handleSearchedLocationChange={handleSearchedLocationChange} />
+      <Map className='map' type='createHazard' setFormInfo={setFormInfo} formInfo={formInfo} />
       <Form className='form'>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
@@ -300,11 +273,7 @@ const CreateHazard = () => {
           {timeInfo.publishDateTimeType === "dt_set" && (
             <DateTimeInput
               name="hazardPublishDT"
-              className={
-                formErrors && formErrors.hazardPublishDT
-                  ? "form-control error"
-                  : "form-control"
-              }
+              className={formErrors && formErrors.hazardPublishDT ? 'form-control error' : 'form-control'}
               placeholder="Select publish date and time"
               iconPosition="left"
               value={formInfo.hazardPublishDT}
@@ -336,11 +305,7 @@ const CreateHazard = () => {
           />
           {timeInfo.removeDateTimeType === "dt_set" && (
             <DateTimeInput
-              className={
-                formErrors && formErrors.hazardRemoveDT
-                  ? "form-control error"
-                  : "form-control"
-              }
+              className={formErrors && formErrors.hazardRemoveDT ? 'form-control error' : 'form-control'}
               name="hazardRemoveDT"
               placeholder="Select date and time to remove"
               iconPosition="left"
@@ -351,22 +316,21 @@ const CreateHazard = () => {
             />
           )}
         </Form.Group>
-        {formErrors.hazardRemoveDT !== "" &&
-          timeInfo.removeDateTimeType === "dt_set" && (
-            <Message
-              icon="exclamation"
-              header="Error"
-              content="Remove time should be in the future."
-            />
-          )}
-        {formErrors.hazardPublishDT !== "" &&
-          timeInfo.publishDateTimeType === "dt_set" && (
-            <Message
-              icon="exclamation"
-              header="Error"
-              content="Publish time should now or be in the future."
-            />
-          )}
+        {formErrors.hazardRemoveDT !== "" && timeInfo.removeDateTimeType === "dt_set" && (
+          <Message
+            icon="exclamation"
+            header="Error"
+            content="Remove time should be in the future."
+          />
+        )}
+        {formErrors.hazardPublishDT !== "" && timeInfo.publishDateTimeType === "dt_set" && (
+          <Message
+            icon="exclamation"
+            header="Error"
+            content="Publish time should now or be in the future."
+          />
+        )}
+
         <Divider horizontal>*</Divider>
         <Form.Checkbox
           toggle
@@ -387,26 +351,21 @@ const CreateHazard = () => {
           }
         />
         <Divider horizontal>*</Divider>
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <Button
-            fluid
-            type="submit"
-            color="blue"
-            disabled={
-              isLoading ||
-              !formInfo.hazardType ||
-              formErrors.hazardRemoveDT ||
-              formErrors.hazardPublishDT ||
-              (formInfo.hazardType !== "other" && !formInfo.hazardSubType) ||
-              (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 5)
-            }
-            onClick={handleSubmit}
-          >
-            Create
-          </Button>
-        )}
+        <Button
+          fluid
+          type="submit"
+          color="blue"
+          disabled={
+            !formInfo.hazardType ||
+            formErrors.hazardRemoveDT ||
+            formErrors.hazardPublishDT ||
+            (formInfo.hazardType !== "other" && !formInfo.hazardSubType) ||
+            (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 5)
+          }
+          onClick={handleSubmit}
+        >
+          Create
+        </Button>
       </Form>
     </div>
   );
