@@ -6,7 +6,7 @@ import { GoogleMap, StandaloneSearchBox, Marker, withScriptjs, withGoogleMap, Lo
 
 let markerArray = [];
 const lib = ["places"];
-const Map = ({ type, handleSearchedLocationChange }) => {
+const Map = ({ type, handleSearchedLocationChange, detailsLocation }) => {
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 })
   //const [markers, setMarkers] = useState(null)
   const [marker, setMarker] = useState(null)
@@ -32,7 +32,8 @@ const Map = ({ type, handleSearchedLocationChange }) => {
   };
 
   const onSBLoad = ref => {
-    setSearchBox(ref);
+    if (detailsLocation) setSearchBox(detailsLocation);
+    else setSearchBox(ref);
   };
 
   const onPlacesChange = () => {

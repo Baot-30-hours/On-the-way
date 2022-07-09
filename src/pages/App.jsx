@@ -7,7 +7,7 @@ import CreateHazard from "./CreateHazard";
 import CreateUser from "./Register";
 import HazardList from "./HazardList";
 import BackendTest from "./BackendTest";
-import RegisterOptimize from "./RegisterOptimize";
+import LogIn from "./LogIn";
 import FetchData from "./NewBoard";
 import HazardDetails from "./HazardDetails";
 
@@ -23,8 +23,7 @@ export default function App() {
           <Route path="hazardlist" element={<HazardList />} />
           <Route path="hazarddetails" element={<HazardDetails />} />
           <Route path="register" element={<CreateUser />} />
-          <Route path="log-in" element={<RegisterOptimize type="log in" />} />
-          <Route path="sign-up" element={<RegisterOptimize type="sign up" />} />
+          <Route path="log-in" element={<LogIn />} />
           <Route path="backendtest" element={<BackendTest />} />
           <Route path="newsboard" element={<FetchData />} />
         </Route>

@@ -5,8 +5,8 @@ import jwtDecode from 'jwt-decode';
 import '../css/LogIn.css';
 import { useEffect } from 'react';
 
-const RegisterOptimize = ({ type }) => {
-  const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', nickName: '', email: '', city: '', password: '', repeatPassword: '', terms: false });
+const LogIn = () => {
+  const [userInfo, setUserInfo] = useState({ email: '', password: '' });
   const [formErrors, setFormErrors] = useState({});
 
   const handleFormInfoChange = (e, { name, value }) =>
@@ -106,12 +106,8 @@ const RegisterOptimize = ({ type }) => {
 
   return (
     <div className="log-in">
-      <h1>{type}</h1>
-      {
-        type === 'log in'
-          ? <div className="subtitle">Don't have an account? <Link to='/register'>Sign Up</Link></div>
-          : <div className="subtitle">Already have an account? <Link to='/log-in'>Log In</Link></div>
-      }
+      <h1>Log In</h1>
+      <div className="subtitle">Don't have an account? <Link to='/register'>Sign Up</Link></div>
       <div className="form-wrapper">
         <div className="social">
           <div className="social-button google"></div>
@@ -119,35 +115,6 @@ const RegisterOptimize = ({ type }) => {
         <Divider horizontal className="horizontal-divider">Or use your email</Divider>
         <Divider vertical section className="vertical-divider">or</Divider>
         <Form>
-          {
-            type === 'sign up' &&
-            <Form.Input
-              fluid
-              className={formErrors && formErrors.lastName ? 'form-control error' : 'form-control'}
-              label='First name *'
-              name='firstName'
-              id='firstName'
-              placeholder='First name'
-              type='text'
-              // value={userInfo.firstName}
-              onChange={(e) => handleChange(e)}
-            />
-          }
-          {type === 'sign up' && formErrors && formErrors.firstName && <span className='error'>{formErrors.firstName}</span>}
-          {
-            type === 'sign up' &&
-            <Form.Input
-              fluid
-              className={formErrors && formErrors.lastName ? 'form-control error' : 'form-control'}
-              label='Last name *'
-              name='lastName'
-              if='lastName'
-              type='text'
-              placeholder='Last name'
-              onChange={(e) => handleChange(e)}
-            />
-          }
-          {type === 'sign up' && formErrors && formErrors.lastName && <span className='error'>{formErrors.lastName}</span>}
           <Form.Input
             fluid
             label='Email address *'
@@ -157,53 +124,26 @@ const RegisterOptimize = ({ type }) => {
             placeholder='you.email@example.com'
             onChange={(e) => handleChange(e)}
           />
-          {
-            type === 'sign up' &&
-            <Form.Input
-              label='Password *'
-              name='password'
-              id='password'
-              type='password'
-              placeholder='password'
-              onChange={(e) => handleChange(e)}
-            />
-          }
-          {type === 'sign up' && formErrors && formErrors.password && <span className='error'>{formErrors.password}</span>}
           <Form.Input
-            label='Reapet password *'
-            name='repeatPassword'
-            id='repeatPassword'
+            label='password *'
+            name='password'
+            id='password'
             type='password'
-            placeholder='repeat password'
+            placeholder='password'
             onChange={(e) => handleChange(e)}
           />
-          {formErrors && formErrors.repeatPassword && <span className='error'>{formErrors.repeatPassword}</span>}
-          {
-            type === 'sign up'
-              ? <Button
-                fluid
-                color="blue"
-                type="submit"
-                disabled={
-                  !userInfo.email
-                  || !userInfo.password}
-                onClick={handleSubmit}>Sign Up</Button>
-              : <Button
-                fluid
-                color="blue"
-                type="submit"
-                disabled={
-                  !userInfo.firstName
-                  || !userInfo.lastName
-                  || !userInfo.email
-                  || !userInfo.password
-                  || !userInfo.repeatPassword}
-                onClick={handleSubmit}>Log In</Button>
-          }
+          <Button
+            fluid
+            color="blue"
+            type="submit"
+            disabled={
+              !userInfo.email
+              || !userInfo.password}
+            onClick={handleSubmit}>Log In</Button>
         </Form>
       </div>
     </div>
   );
 }
 
-export default RegisterOptimize;
+export default LogIn;
