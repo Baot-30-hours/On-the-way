@@ -6,7 +6,7 @@ import { GoogleMap, StandaloneSearchBox, Marker, withScriptjs, withGoogleMap, Lo
 
 let markerArray = [];
 const lib = ["places"];
-const Map = ({ type, handleSearchedLocationChange, detailsLocation }) => {
+const Map = ({ type, handleSearchedLocationChange, detailsLocation, detailsPage }) => {
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 })
   //const [markers, setMarkers] = useState(null)
   const [marker, setMarker] = useState(null)
@@ -34,6 +34,7 @@ const Map = ({ type, handleSearchedLocationChange, detailsLocation }) => {
   const onSBLoad = ref => {
     if (detailsLocation) setSearchBox(detailsLocation);
     else setSearchBox(ref);
+    console.log('ref', ref);
   };
 
   const onPlacesChange = () => {
@@ -67,19 +68,21 @@ const Map = ({ type, handleSearchedLocationChange, detailsLocation }) => {
   return (
     <LoadScript googleMapsApiKey={key} libraries={lib} id={id}>
       <div className="map-wrapper">
-        <div id="searchbox">
-          <StandaloneSearchBox
-            onLoad={onSBLoad}
-            onPlacesChanged={onPlacesChange}
-            bounds={bounds}
-          >
-            <input
-              type="text"
-              placeholder="Search location"
-            />
-          </StandaloneSearchBox>
-          <br />
-        </div>
+        {!detailsPage &&
+          <div id="searchbox">
+            <StandaloneSearchBox
+              onLoad={onSBLoad}
+              onPlacesChanged={onPlacesChange}
+              bounds={bounds}
+            >
+              <input
+                type="text"
+                placeholder="Search location"
+              />
+            </StandaloneSearchBox>
+            <br />
+          </div>
+        }
         <div>
           <GoogleMap
             center={currentLocation}

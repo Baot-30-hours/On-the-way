@@ -4,8 +4,8 @@ import { Form, Divider, Message, Button } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
 import LoadingSpinner from "./LoadingSpinner";
-import "../css/LogIn.css";
-import "../css/LoadingSpinner.css";
+// import "../css/LogIn.css";
+import "../css/CreateHazard.css";
 import Map from "./GoogleMap";
 
 const CreateHazard = () => {
@@ -63,12 +63,12 @@ const CreateHazard = () => {
           const yaerAndTime = splitDateTime[2].split(" ");
           valueTime = new Date(
             yaerAndTime[0] +
-              "-" +
-              splitDateTime[1] +
-              "-" +
-              splitDateTime[0] +
-              "T" +
-              yaerAndTime[1]
+            "-" +
+            splitDateTime[1] +
+            "-" +
+            splitDateTime[0] +
+            "T" +
+            yaerAndTime[1]
           );
         } else {
           valueTime = new Date(value);
@@ -114,7 +114,7 @@ const CreateHazard = () => {
 
   const handleSubmit = async (e) => {
     setIsLoading(true);
-   
+
     await delay(400);
     e.preventDefault();
 
