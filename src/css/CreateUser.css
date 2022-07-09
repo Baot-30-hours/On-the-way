@@ -1,5 +1,15 @@
 .register-wrapper {
-  max-width: 30vw;
-  width: 30vw;
-  margin: auto;
+  margin: 0 auto;
+  max-width: 350px;
+  width: 350px;
+}
+
+
+/* tablet large */
+@media (min-width: 1024px) {
+  .register-wrapper {
+    max-width: 800px;
+    width: 800px;
+    position: relative
+  }
 }
