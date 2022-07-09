@@ -6,6 +6,7 @@ import ReactTable from "react-table-v6";
 import "react-table-v6/react-table.css";
 import * as GlobalFunctions from "../GlobalFunctions.js";
 import Moment from "moment";
+import Map from "./GoogleMap";
 
 const images_url = "http://localhost:5000/public/uploaded/";
 
@@ -251,7 +252,8 @@ const HazardDetails = () => {
                     {GlobalFunctions.getLocationDisplayName(
                       formInfo.hazard.location
                     )}{" "}
-                    - {formInfo.hazard.locationText}
+                    {/* - {formInfo.hazard.locationText} */}
+                    <Map detailsLocation={formInfo.hazard.locationText} />
                   </Item.Extra>
                   {formInfo.hazard.notifyMunicipality === "true" && (
                     <Item.Meta>
