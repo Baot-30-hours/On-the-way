@@ -25,3 +25,11 @@
 
 /* desktop-large  */
 @media only screen and (min-width: 1440px) {}
+
+
+.create-hazard .map-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem 0;
+  align-items: center;
+}

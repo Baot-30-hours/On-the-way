@@ -13,6 +13,8 @@ const CreateHazard = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
+  const [searchedLocation, setSearchedLocation] = useState('');
+
   const [formErrors, setFormErrors] = useState({
     hazardRemoveDT: "",
     hazardPublishDT: "",
@@ -35,7 +37,7 @@ const CreateHazard = () => {
     hazardSubType: "",
     hazardDetails: "",
     hazardLocation: "",
-    hazardLocationText: "",
+    // hazardLocationText: "",
     hazardFiles: null,
     hazardDT: timeInfo.now,
     hazardPublishDT: timeInfo.now,
@@ -45,7 +47,7 @@ const CreateHazard = () => {
     //hazardId: "",
   });
   const handleTimeFormInfoChange = (e, { name, value }) => {
-    console.log(formErrors);
+    console.log(formErrors)
     let currentFormErrors = formErrors;
     switch (name) {
       case "hazardRemoveDT":
@@ -85,10 +87,20 @@ const CreateHazard = () => {
     }
     setFormErrors(currentFormErrors);
     setFormInfo({ ...formInfo, [name]: valueTime });
-  };
+  }
+
+  const handleSearchedLocationChange = (value) => {
+    console.log('formInfo', formInfo);
+    setFormInfo({ ...formInfo, hazardLocation: value });
+    // console.log('formInfo', formInfo);
+    console.log('value', value);
+    console.log('formInfo', formInfo);
+  }
+
   const handleFormInfoChange = (e, { name, value }) => {
     setFormInfo({ ...formInfo, [name]: value });
-  };
+    console.log('formInfo', formInfo);
+  }
 
   const handleCheckedChange = (e, { name, value }) => {
     setFormInfo({ ...formInfo, [name]: !value });
@@ -113,7 +125,7 @@ const CreateHazard = () => {
     data.append("subType", formInfo.hazardSubType);
     data.append("details", formInfo.hazardDetails);
     data.append("location", formInfo.hazardLocation);
-    data.append("locationText", formInfo.hazardLocationText);
+    // data.append("locationText", formInfo.hazardLocationText);
     data.append("dt", formInfo.hazardDT);
     data.append("publishDT", formInfo.hazardPublishDT);
     data.append("removeDT", formInfo.hazardRemoveDT);
@@ -140,9 +152,9 @@ const CreateHazard = () => {
   };
 
   return (
-    <div className="log-in">
-      {/* <Map /> */}
-      <Form>
+    <div className="create-hazard">
+      <Map className='map' type='createHazard' handleSearchedLocationChange={handleSearchedLocationChange} />
+      <Form className='form'>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
           <Form.Select
@@ -192,7 +204,7 @@ const CreateHazard = () => {
             />
           )}
         </Form.Group>
-        <Form.Group widths="equal">
+        {/* <Form.Group widths="equal">
           <Form.Select
             fluid
             search
@@ -214,7 +226,7 @@ const CreateHazard = () => {
               handleFormInfoChange(e, { name, value })
             }
           />
-        </Form.Group>
+        </Form.Group> */}
         <Form.TextArea
           label="Details"
           placeholder="Tell us more about the hazard..."
@@ -355,13 +367,12 @@ const CreateHazard = () => {
               content="Publish time should now or be in the future."
             />
           )}
-
         <Divider horizontal>*</Divider>
         <Form.Checkbox
           toggle
           label="Send Alert to local municipality"
           name="notifyMunicipality"
-          value={formInfo.notifyMunicipality}
+          // value={formInfo.notifyMunicipality}
           onClick={(e, { name, value }) =>
             handleCheckedChange(e, { name, value })
           }
@@ -370,7 +381,7 @@ const CreateHazard = () => {
           toggle
           label="Anonymous report"
           name="anonymousReport"
-          value={formInfo.anonymousReport}
+          // value={formInfo.anonymousReport}
           onClick={(e, { name, value }) =>
             handleCheckedChange(e, { name, value })
           }
