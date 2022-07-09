@@ -10,6 +10,8 @@ const CreateHazard = () => {
   const currentDateAndTime = new Date();
   const navigate = useNavigate();
 
+  const [searchedLocation, setSearchedLocation] = useState('');
+
   const [formErrors, setFormErrors] = useState({
     hazardRemoveDT: "",
     hazardPublishDT: "",
@@ -33,7 +35,7 @@ const CreateHazard = () => {
     hazardSubType: "",
     hazardDetails: "",
     hazardLocation: "",
-    hazardLocationText: "",
+    // hazardLocationText: "",
     hazardFiles: null,
     hazardDT: timeInfo.now,
     hazardPublishDT: timeInfo.now,
@@ -42,27 +44,27 @@ const CreateHazard = () => {
     anonymousReport: false,
     //hazardId: "",
   });
-  const handleTimeFormInfoChange = (e, { name, value }) =>{
+  const handleTimeFormInfoChange = (e, { name, value }) => {
     console.log(formErrors)
     let currentFormErrors = formErrors;
     switch (name) {
       case "hazardRemoveDT":
       case "hazardPublishDT":
         var valueTime;
-        if ((name==="hazardPublishDT" && timeInfo.publishDateTimeType=== "dt_set") ||
-            (name==="hazardRemoveDT" && timeInfo.removeDateTimeType=== "dt_set")){
-          const splitDateTime=value.split("-")
+        if ((name === "hazardPublishDT" && timeInfo.publishDateTimeType === "dt_set") ||
+          (name === "hazardRemoveDT" && timeInfo.removeDateTimeType === "dt_set")) {
+          const splitDateTime = value.split("-")
           const yaerAndTime = splitDateTime[2].split(" ")
-          valueTime = new Date(yaerAndTime[0]+"-"+splitDateTime[1]+"-"+ splitDateTime[0]+"T"+ yaerAndTime[1])
+          valueTime = new Date(yaerAndTime[0] + "-" + splitDateTime[1] + "-" + splitDateTime[0] + "T" + yaerAndTime[1])
         }
-        else{
+        else {
           valueTime = new Date(value)
         }
         if (valueTime.getTime() < currentDateAndTime.getTime()) {
           currentFormErrors[name] = 'error';
         }
         else {
-          currentFormErrors[name]="";
+          currentFormErrors[name] = "";
         }
         break;
       case "hazdardDT":
@@ -72,14 +74,23 @@ const CreateHazard = () => {
         break;
     }
     setFormErrors(currentFormErrors);
-    setFormInfo({ ...formInfo, [name]: valueTime });  
+    setFormInfo({ ...formInfo, [name]: valueTime });
   }
-  const handleFormInfoChange = (e, { name, value }) =>{
-     setFormInfo({ ...formInfo, [name]: value });  
+
+  const handleSearchedLocationChange = (value) => {
+    console.log('formInfo', formInfo);
+    setFormInfo({ ...formInfo, hazardLocation: value });
+    // console.log('formInfo', formInfo);
+    console.log('value', value);
+    console.log('formInfo', formInfo);
+  }
+
+  const handleFormInfoChange = (e, { name, value }) => {
+    setFormInfo({ ...formInfo, [name]: value });
+    console.log('formInfo', formInfo);
   }
 
   const handleCheckedChange = (e, { name, value }) => {
-
     setFormInfo({ ...formInfo, [name]: !value });
   };
 
@@ -98,7 +109,7 @@ const CreateHazard = () => {
     data.append("subType", formInfo.hazardSubType);
     data.append("details", formInfo.hazardDetails);
     data.append("location", formInfo.hazardLocation);
-    data.append("locationText", formInfo.hazardLocationText);
+    // data.append("locationText", formInfo.hazardLocationText);
     data.append("dt", formInfo.hazardDT);
     data.append("publishDT", formInfo.hazardPublishDT);
     data.append("removeDT", formInfo.hazardRemoveDT);
@@ -125,9 +136,9 @@ const CreateHazard = () => {
   };
 
   return (
-    <div className="log-in">
-           <Map />
-      <Form>
+    <div className="create-hazard">
+      <Map className='map' type='createHazard' handleSearchedLocationChange={handleSearchedLocationChange} />
+      <Form className='form'>
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
           <Form.Select
@@ -177,7 +188,7 @@ const CreateHazard = () => {
             />
           )}
         </Form.Group>
-        <Form.Group widths="equal">
+        {/* <Form.Group widths="equal">
           <Form.Select
             fluid
             search
@@ -199,7 +210,7 @@ const CreateHazard = () => {
               handleFormInfoChange(e, { name, value })
             }
           />
-        </Form.Group>
+        </Form.Group> */}
         <Form.TextArea
           label="Details"
           placeholder="Tell us more about the hazard..."
@@ -318,34 +329,34 @@ const CreateHazard = () => {
         </Form.Group>
         {formErrors.hazardRemoveDT !== "" && timeInfo.removeDateTimeType === "dt_set" && (
           <Message
-            icon= "exclamation"
-            header = "Error"
-            content = "Remove time should be in the future."
+            icon="exclamation"
+            header="Error"
+            content="Remove time should be in the future."
           />
-          )}
-        {formErrors.hazardPublishDT !== "" && timeInfo.publishDateTimeType === "dt_set"&& (
+        )}
+        {formErrors.hazardPublishDT !== "" && timeInfo.publishDateTimeType === "dt_set" && (
           <Message
-            icon= "exclamation"
-            header = "Error"
-            content = "Publish time should now or be in the future."
+            icon="exclamation"
+            header="Error"
+            content="Publish time should now or be in the future."
           />
-          )}
+        )}
 
         <Divider horizontal>*</Divider>
         <Form.Checkbox
           toggle
           label="Send Alert to local municipality"
           name="notifyMunicipality"
-          value={formInfo.notifyMunicipality}
+          // value={formInfo.notifyMunicipality}
           onClick={(e, { name, value }) =>
             handleCheckedChange(e, { name, value })
           }
         />
-        <Form.Checkbox  
+        <Form.Checkbox
           toggle
           label="Anonymous report"
           name="anonymousReport"
-          value={formInfo.anonymousReport}
+          // value={formInfo.anonymousReport}
           onClick={(e, { name, value }) =>
             handleCheckedChange(e, { name, value })
           }
@@ -357,7 +368,7 @@ const CreateHazard = () => {
           color="blue"
           disabled={
             !formInfo.hazardType ||
-            formErrors.hazardRemoveDT || 
+            formErrors.hazardRemoveDT ||
             formErrors.hazardPublishDT ||
             (formInfo.hazardType !== "other" && !formInfo.hazardSubType) ||
             (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 5)
