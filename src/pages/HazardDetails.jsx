@@ -253,7 +253,7 @@ const HazardDetails = () => {
                       formInfo.hazard.location
                     )}{" "}
                     {/* - {formInfo.hazard.locationText} */}
-                    <Map detailsLocation={formInfo.hazard.locationText} detailsPage={true} />
+                    <Map detailsLocation={formInfo.hazard.location} detailsPage={true} />
                   </Item.Extra>
                   {formInfo.hazard.notifyMunicipality === "true" && (
                     <Item.Meta>
