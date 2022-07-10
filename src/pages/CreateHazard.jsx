@@ -204,7 +204,7 @@ const CreateHazard = () => {
             />
           )}
         </Form.Group>
-        {/* <Form.Group widths="equal">
+        <Form.Group widths="equal">
           <Form.Select
             fluid
             search
@@ -226,7 +226,7 @@ const CreateHazard = () => {
               handleFormInfoChange(e, { name, value })
             }
           />
-        </Form.Group> */}
+        </Form.Group>
         <Form.TextArea
           label="Details"
           placeholder="Tell us more about the hazard..."
