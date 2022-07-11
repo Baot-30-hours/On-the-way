@@ -15,8 +15,25 @@ const HazardDetails = () => {
   const params = useLocation();
   const hazardId = params.state.id;
 
+  const getActiveUser = () => {
+    //TODO: take details from session
+    let firstName = "Keren";
+    let lastName = "Golan";
+    let phone = "054-2471066";
+    let email = "horowitzkeren@gmail.com";
+    let retVal = {
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      email: email,
+    };
+
+    return retVal;
+  };
+
   const [formInfo, setFormInfo] = useState({
     hazard: {},
+    activeUser: getActiveUser(),
   });
 
   useEffect(() => {
@@ -222,28 +239,40 @@ const HazardDetails = () => {
                   </Item.Meta>
                   <Item.Description>
                     <b>When: </b>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {Moment(formInfo.hazard.dt).format("DD/MM/YY HH:mm")}
                   </Item.Description>
                   <Item.Description>
-                    <b>Published:</b> &nbsp;&nbsp;&nbsp;
+                    <b>Published:</b>
+                    &emsp;&emsp;&emsp;&emsp;&nbsp;
                     {Moment(formInfo.hazard.publishDT).format("DD/MM/YY HH:mm")}
                   </Item.Description>
                   <Item.Description>
-                    <b>Published By:</b> &nbsp;&nbsp;&nbsp;
+                    <b>Published By:</b>
+                    &emsp;&emsp;&emsp;
                     {formInfo.hazard.anonymousReport === "true" && (
-                      <span>Anomymous</span>
+                      <span>Anonymous</span>
                     )}
                     {formInfo.hazard.anonymousReport !== "true" && (
-                      <span>{formInfo.hazard.username}</span>
+                      <span>
+                        {formInfo.activeUser.firstName}&nbsp;
+                        {formInfo.activeUser.lastName}
+                      </span>
                     )}
                   </Item.Description>
                   {formInfo.hazard.anonymousReport !== "true" && (
                     <Item.Description>
-                      <b>Contact Details:</b> &nbsp;&nbsp;&nbsp;
-                      <span>
-                        <i>---TO BE COMPLETED---</i>
-                      </span>
+                      <table>
+                        <tr>
+                          <td valign="top" width="122px;">
+                            <b>Contact Details:</b>
+                          </td>
+                          <td>
+                            <div>{formInfo.activeUser.phone}</div>
+                            <div>{formInfo.activeUser.email}</div>
+                          </td>
+                        </tr>
+                      </table>
                     </Item.Description>
                   )}
 
@@ -253,7 +282,10 @@ const HazardDetails = () => {
                       formInfo.hazard.location
                     )}{" "}
                     {/* - {formInfo.hazard.locationText} */}
-                    <Map detailsLocation={formInfo.hazard.location} detailsPage={true} />
+                    <Map
+                      detailsLocation={formInfo.hazard.location}
+                      detailsPage={true}
+                    />
                   </Item.Extra>
                   {formInfo.hazard.notifyMunicipality === "true" && (
                     <Item.Meta>
