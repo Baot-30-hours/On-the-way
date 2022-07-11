@@ -1,38 +1,23 @@
 import { Outlet, Link } from "react-router-dom";
+import React from 'react';
 import '../css/Layout.css';
+import { getActiveUser } from "../GlobalFunctions";
 
 const Layout = () => {
+
   return (
     <>
       <nav>
         <ul>
-          <li>
-            <Link to="/">Home</Link>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/createhazard">Report Hazard</Link></li>
+          <li><Link to="/hazardlist">Hazard List</Link></li>
+          <li><Link to="/register">Sign up</Link></li>
+          <li><Link to="/log-in" state={{ from: "occupation" }}>Log In</Link>
           </li>
-          <li>
-            <Link to="/createhazard">Create Hazard</Link>
-          </li>
-          <li>
-            <Link to="/hazardlist">Hazard List</Link>
-          </li>
-          <li>
-            <Link to="/register">Sign up</Link>
-          </li>
-          <li>
-            <Link to="/log-in">Log In</Link>
-          </li>
-          {/* <li>
-            <Link to="/sign-up">Sign Up</Link>
-          </li> */}
-          <li>
-            <Link to="/backendtest">Backend Test</Link>
-          </li>
-          <li>
-            <Link to="/newsboard">News Board</Link>
-          </li>
+          <li><div>{`Hello ${getActiveUser() ? getActiveUser().firstName : 'guest'}`}</div></li>
         </ul>
       </nav>
-
       <Outlet />
     </>
   );

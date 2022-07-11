@@ -29,7 +29,7 @@ const HazardList = () => {
       default:
         return subType;
     }
-    return arr.find((hazard) => hazard.value === subType).text;
+    return arr.find((hazard) => hazard.value === subType)?.text;
   };
 
   useEffect(() => {
@@ -58,13 +58,13 @@ const HazardList = () => {
             location: Consts.Locations.find(
               (hazard) => hazard.value === parsed[i].location
             )?.text,
-            // locationText: parsed[i].locationText,
+            locationText: parsed[i].locationText,
             publishDT: Moment(parsed[i].publishDT).format("DD/MM/YY HH:mm"),
             dt: Moment(parsed[i].dt).format("DD/MM/YY HH:mm"),
             image: parsed[i].file1 ? (
               <Image
                 src={images_url + parsed[i].file1}
-                height="100"
+                  height="100"
                 object-fit="cover"
               ></Image>
             ) : (
@@ -75,6 +75,7 @@ const HazardList = () => {
           setHazards(data);
         }
       }
+      setHazards(data);
     };
     fetchData();
   }, []);
@@ -121,11 +122,11 @@ const HazardList = () => {
     //   accessor: "locationText",
     // },
     {
-      Header: "publish date time",
+      Header: "Publish Date time",
       accessor: "publishDT",
     },
     {
-      Header: "data time",
+      Header: "Data time",
       accessor: "dt",
     },
     {

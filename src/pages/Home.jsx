@@ -4,9 +4,12 @@ import "../css/App.css";
 import '../css/Home.css';
 import { useNavigate } from "react-router-dom";
 import Map from "./GoogleMap";
+import { getActiveUser } from '../GlobalFunctions';
+// import { getUserFromSession } from './App';
 
 export default function Home() {
-  var userName = "Israel Israeli";
+  var userName = getActiveUser() ? getActiveUser().firstName : 'guest';
+  console.log(getActiveUser());
 
   const navigate = useNavigate();
 
@@ -26,7 +29,7 @@ export default function Home() {
       <div className="func-buttons ui three column centered grid">
         <div className="three column centered row">
           <Button color='orange' className="msg-btn" onClick={handleClick1}>Message for hotline</Button>
-          <Button color='olive' className="new-btn" onClick={handleClick2}>Create Hazard</Button>
+          <Button color='olive' className="new-btn" onClick={handleClick2}>Report Hazard</Button>
           <Button color='yellow' className="mail-btn">My messages</Button>
         </div>
       </div>

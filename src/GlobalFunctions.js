@@ -25,3 +25,11 @@ export const getTypeDisplayName = (type) => {
 export const getLocationDisplayName = (location) => {
   return Consts.Locations.find((hazard) => hazard.value === location)?.text;
 };
+
+export const getActiveUser = () => {
+  return JSON.parse(sessionStorage.getItem('user'));
+}
+
+export const setUserInSession = (user) => {
+  sessionStorage.setItem('user', JSON.stringify(user));
+}

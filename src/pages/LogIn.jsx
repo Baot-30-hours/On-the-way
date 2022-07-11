@@ -1,84 +1,57 @@
 import React, { useState } from 'react';
-import { Form, Divider, Button, Checkbox } from 'semantic-ui-react';
+import { Form, Divider, Button } from 'semantic-ui-react';
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import '../css/LogIn.css';
 import { useEffect } from 'react';
+import { setUserInSession } from '../GlobalFunctions';
 
-const LogIn = () => {
+
+export const LogIn = () => {
   const [userInfo, setUserInfo] = useState({ email: '', password: '' });
-  const [formErrors, setFormErrors] = useState({});
-
-  const handleFormInfoChange = (e, { name, value }) =>
-    setUserInfo({ ...userInfo, [name]: value });
+  const [disable, setDisable] = useState(true);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    let currentFormErrors = formErrors;
-    switch (name) {
-      case 'firstName':
-      case 'lastName':
-        if (!value || value.length < 3 || value.length > 20 ||
-          !value.match(/^[a-zA-Z-]+$/)) {
-          currentFormErrors[name] = `${e.target.placeholder} should have number of characters between 3-20 and include only letters and dash (-) Log`;
-        }
-        else delete currentFormErrors[name];
-        break;
-      case 'nickName':
-        if (value.length > 20) {
-          currentFormErrors[name] = `${e.target.placeholder} should have maximum length of 20 characters`;
-        }
-        else delete currentFormErrors[name];
-        break;
-      case 'email':
-        const regex = RegExp(/^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-        if (!regex.test(value)) {
-          currentFormErrors[name] = `email should have the pattern of your@domain.com`;
-        }
-        else delete currentFormErrors[name];
-        break;
-      case 'password':
-        if (!value || value.length < 5 || value.length > 20 ||
-          !value.match(/^[a-zA-Z0-9!@#$%^&*()]+$/)) {
-          currentFormErrors[name] = `${e.target.placeholder} should have number of characters between 5-20 and include only letters, numbers and special carachters above the numbers.`;
-        }
-        else delete currentFormErrors[name];
-        break;
-      case 'repeatPassword':
-        if (!value || value !== userInfo.password) {
-          currentFormErrors[name] = `This password should be equal to the password from the previous field`;
-        }
-        else delete currentFormErrors[name];
-        break;
-      default:
-        break;
+    setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+    if (
+      userInfo.email &&
+      userInfo.password
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
     }
-    setFormErrors(currentFormErrors);
-    if (e.target.checked) setUserInfo({ ...userInfo, [e.target.name]: e.target.checked });
-    else setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('userInfo', userInfo);
-    const response = await fetch("/api/adduser", {
+    const response = await fetch("/api/getUserByEmailAndPassword", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        firstName: userInfo.firstName,
-        lastName: userInfo.lastName,
-        nickName: userInfo.nickName,
         email: userInfo.email,
-        city: userInfo.city,
         password: userInfo.password,
-        repeatPassword: userInfo.repeatPassword
       }),
     });
     const body = await response.text();
     if (body) {
-      console.log(`user ${userInfo.firstName} was inserted to the DB with id ${body}`);
+      const user = JSON.parse(body.replace(/\\/g, ""))
+      if(user.error){
+        alert(user.error)
+      }
+      else{//success
+        console.log(`user ${user.user.email} exist in the db!`);
+        setUserInSession(user.user);
+        setDisable(true);
+        navigate("/");
+      }
+    }
+    else{
+      alert("Failed to login with these credentials")
     }
   };
 
@@ -136,14 +109,17 @@ const LogIn = () => {
             fluid
             color="blue"
             type="submit"
-            disabled={
-              !userInfo.email
-              || !userInfo.password}
-            onClick={handleSubmit}>Log In</Button>
+            disabled={disable}
+            onClick={handleSubmit}>Log In
+            </Button>
         </Form>
       </div>
     </div>
   );
 }
+
+// LogIn.propTypes = {
+//   setToken: PropTypes.func.isRequired
+// }
 
 export default LogIn;

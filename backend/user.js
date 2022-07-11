@@ -13,7 +13,8 @@ module.exports = function (app) {
   listUsers(objUsers);
   var users = JSON.stringify(objUsers);
   console.log(users);
-  res.send({ express: `This is the users list: ${users}` });
+  res.send({ 
+    : `This is the users list: ${users}` });
   */
     listUsers(res);
   });
@@ -22,10 +23,15 @@ module.exports = function (app) {
     createUser(req.body, res);
   });
 
+  app.post("/api/getUserByEmailAndPassword", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    findOneUserByEmailAndPassword(email, password, res);
+  });
+
   app.post("/api/finduser", (req, res) => {
-    //console.log(req.body);
-    var username = req.body.username;
-    findOneUserByUserame(username, res);
+    var userEmail = req.body.userEmail;
+    findOneUserByEmail(userEmail, res);
   });
 
   async function createUser(newUser, res) {
@@ -70,6 +76,51 @@ module.exports = function (app) {
     });
   }
 
+  function findOneUserByEmailAndPassword(email, password, res) {
+    MongoClient.connect(mongodb_url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db(db_name);
+
+      dbo
+        .collection("users")
+        .findOne({ email: email }, function (err, result) {
+          if (err) {
+            throw err;
+          }
+          if (result) {
+            if(password === result.password){
+              res.send({ user: result });
+            }
+            else{
+              res.send({error: 'The email exist but the password is incorrect'});
+            }
+          } else {
+            res.send(null);
+          }
+          db.close();
+        });
+    });
+  }
+
+  function findOneUserByEmail(email, res) {
+    MongoClient.connect(mongodb_url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db(db_name);
+
+      dbo
+        .collection("users")
+        .findOne({ email: email }, function (err, result) {
+          if (err) {throw err;}
+          if (result) {
+            res.send({user : result});
+          } else {
+            res.send(null);
+          }
+          db.close();
+        });
+    });
+  }
+
   function findOneUserByUserame(username, res) {
     MongoClient.connect(mongodb_url, function (err, db) {
       if (err) throw err;
@@ -79,22 +130,11 @@ module.exports = function (app) {
         .collection("users")
         .findOne({ username: username }, function (err, result) {
           if (err) throw err;
-
           if (result) {
-            //var user = JSON.stringify(result);
-            //res.send(`Found user: ${user}`);
             res.send({ user: result });
-            //console.log(`Found a user in the collection with username '${username}':`);
-            //console.log(`ID: '${result._id}':`);
-            //console.log(`First Name: '${result.first_name}':`);
-            //console.log(`Last Name: '${result.last_name}':`);
-            //console.log(`Password: '${result.password}':`);
           } else {
-            //res.send(`User not found`);
             res.send(null);
-            //console.log(`No user found with the username '${username}'`);
           }
-          //console.log(`-------------------`);
           db.close();
         });
     });

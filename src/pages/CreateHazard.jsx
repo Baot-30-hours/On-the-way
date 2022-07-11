@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Divider, Message, Button } from "semantic-ui-react";
 import { DateTimeInput } from "semantic-ui-calendar-react";
 import * as Consts from "./Consts.js";
@@ -7,6 +7,8 @@ import LoadingSpinner from "./LoadingSpinner";
 // import "../css/LogIn.css";
 import "../css/CreateHazard.css";
 import Map from "./GoogleMap";
+import { getActiveUser } from "../GlobalFunctions.js";
+// import { getUserFromSession } from "./App.jsx";
 
 const CreateHazard = () => {
   const currentDateAndTime = new Date();
@@ -32,7 +34,7 @@ const CreateHazard = () => {
     setTimeInfo({ ...timeInfo, [name]: value });
 
   const [formInfo, setFormInfo] = useState({
-    username: "logged_user", // need to take from logged-in user info
+    // username: "", // need to take from logged-in user info
     hazardType: "",
     hazardSubType: "",
     hazardDetails: "",
@@ -120,7 +122,7 @@ const CreateHazard = () => {
 
     const data = new FormData();
 
-    data.append("username", formInfo.username);
+    data.append("userEmail", getActiveUser().email);
     data.append("type", formInfo.hazardType);
     data.append("subType", formInfo.hazardSubType);
     data.append("details", formInfo.hazardDetails);
@@ -150,6 +152,11 @@ const CreateHazard = () => {
     // 👇️ redirect to /hazardlist
     navigate("/hazardlist");
   };
+
+  const user = getActiveUser();
+  if(!user){
+    return <center><Link to="/log-in"><h1>Please log in before reporting hazards</h1></Link></center>
+  }
 
   return (
     <div className="create-hazard">
