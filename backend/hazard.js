@@ -101,7 +101,16 @@ async function getHazards(req, res) {
       const hazard = await dbo
         .collection("hazards")
         .findOne(ObjectId(hazardId));
-      //console.log("hazard", JSON.stringify(hazard));
+      if (hazard.anonymousReport != "true") {
+        const user = await dbo
+          .collection("users")
+          .findOne({ email: hazard.userEmail });
+
+        hazard.firstName = user.firstName;
+        hazard.lastName = user.lastName;
+        hazard.phone = user.phone;
+      }
+
       res.send({ hazards: JSON.stringify(hazard) });
       db.close();
     } else {

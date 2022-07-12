@@ -15,25 +15,8 @@ const HazardDetails = () => {
   const params = useLocation();
   const hazardId = params.state.id;
 
-  const getActiveUser = () => {
-    //TODO: take details from session
-    let firstName = "Keren";
-    let lastName = "Golan";
-    let phone = "054-2471066";
-    let email = "horowitzkeren@gmail.com";
-    let retVal = {
-      firstName: firstName,
-      lastName: lastName,
-      phone: phone,
-      email: email,
-    };
-
-    return retVal;
-  };
-
   const [formInfo, setFormInfo] = useState({
     hazard: {},
-    activeUser: getActiveUser(),
   });
 
   useEffect(() => {
@@ -255,8 +238,8 @@ const HazardDetails = () => {
                     )}
                     {formInfo.hazard.anonymousReport !== "true" && (
                       <span>
-                        {formInfo.activeUser.firstName}&nbsp;
-                        {formInfo.activeUser.lastName}
+                        {formInfo.hazard.firstName}&nbsp;
+                        {formInfo.hazard.lastName}
                       </span>
                     )}
                   </Item.Description>
@@ -268,8 +251,8 @@ const HazardDetails = () => {
                             <b>Contact Details:</b>
                           </td>
                           <td>
-                            <div>{formInfo.activeUser.phone}</div>
-                            <div>{formInfo.activeUser.email}</div>
+                            <div>{formInfo.hazard.phone}</div>
+                            <div>{formInfo.hazard.userEmail}</div>
                           </td>
                         </tr>
                       </table>

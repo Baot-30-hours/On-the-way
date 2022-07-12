@@ -33,7 +33,6 @@ const HazardList = () => {
   };
 
   useEffect(() => {
-
     const fetchData = async () => {
       const currentDateAndTime = new Date();
       const result = await fetch("/api/gethazards");
@@ -46,10 +45,10 @@ const HazardList = () => {
         const currentTime = currentDateAndTime.getTime();
         if (removeTime > currentTime && publishTime <= currentTime) {
           data.push({
-            username:
+            userEmail:
               parsed[i].anonymousReport === "true"
                 ? "Anomymous"
-                : parsed[i].username,
+                : parsed[i].userEmail,
             type: Consts.HazardTypes.find(
               (hazard) => hazard.value === parsed[i].type
             ).text,
@@ -64,7 +63,7 @@ const HazardList = () => {
             image: parsed[i].file1 ? (
               <Image
                 src={images_url + parsed[i].file1}
-                  height="100"
+                height="100"
                 object-fit="cover"
               ></Image>
             ) : (
@@ -91,8 +90,8 @@ const HazardList = () => {
 
   const columns = [
     {
-      Header: "User name",
-      accessor: "username",
+      Header: "User Email",
+      accessor: "userEmail",
     },
     {
       Header: "Type",
