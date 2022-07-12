@@ -7,7 +7,7 @@ import LoadingSpinner from "./LoadingSpinner";
 // import "../css/LogIn.css";
 import "../css/CreateHazard.css";
 import Map from "./GoogleMap";
-import { getActiveUser } from "../GlobalFunctions.js";
+import { getActiveUser, getActiveUserEmail } from "../GlobalFunctions.js";
 // import { getUserFromSession } from "./App.jsx";
 
 const CreateHazard = () => {

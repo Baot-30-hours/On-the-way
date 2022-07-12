@@ -109,13 +109,28 @@ const FormCreateUser = () => {
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
-    await delay(500);
-
+    
     e.preventDefault();
     setDisable(true);
     console.log("userInfo", userInfo);
-    const response = await fetch("/api/adduser", {
+    let response = await fetch("/api/finduser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: userInfo.email,
+      }),
+    });
+    let body = await response.text();
+    if (body) {
+      alert(
+        `Email address: ${JSON.parse(body).user.email} is already exist. please choose another email address.`
+      );
+      return;
+    }
+
+    response = await fetch("/api/adduser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -131,12 +146,15 @@ const FormCreateUser = () => {
       }),
     });
 
-    const body = await response.text();
+    body = await response.text();
     if (body) {
       console.log(
         `user ${userInfo.firstName} was inserted to the DB with id ${body}`
       );
     }
+    setIsLoading(true);
+    await delay(500);
+
     navigate("/");
   };
 

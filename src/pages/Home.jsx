@@ -4,11 +4,11 @@ import "../css/App.css";
 import '../css/Home.css';
 import { useNavigate } from "react-router-dom";
 import Map from "./GoogleMap";
-import { getActiveUser } from '../GlobalFunctions';
+import { getActiveUser, getActiveUserName } from '../GlobalFunctions';
 // import { getUserFromSession } from './App';
 
 export default function Home() {
-  var userName = getActiveUser() ? getActiveUser().firstName : 'guest';
+  var userName = getActiveUserName();
   console.log(getActiveUser());
 
   const navigate = useNavigate();
