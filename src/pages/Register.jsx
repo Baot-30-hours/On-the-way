@@ -9,7 +9,6 @@ const FormCreateUser = () => {
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
-    uname: "",
     email: "",
     phone: "",
     city: "",
@@ -41,13 +40,6 @@ const FormCreateUser = () => {
           currentFormErrors[
             name
           ] = `${e.target.placeholder} should have number of characters between 3-20 and include only letters and dash (-) sign`;
-        } else delete currentFormErrors[name];
-        break;
-      case "uname":
-        if (value.length > 20) {
-          currentFormErrors[
-            name
-          ] = `${e.target.placeholder} should have maximum length of 20 characters`;
         } else delete currentFormErrors[name];
         break;
       case "email":
@@ -131,7 +123,6 @@ const FormCreateUser = () => {
       body: JSON.stringify({
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
-        uname: userInfo.uname,
         email: userInfo.email,
         phone: userInfo.phone,
         city: userInfo.city,
@@ -211,20 +202,6 @@ const FormCreateUser = () => {
           <br />
         </Form.Group>
         {/* אורך 20 */}
-        <Form.Input
-          fluid
-          className={"form-control"}
-          label="User name *"
-          name="uname"
-          id="uname"
-          type="text"
-          placeholder="user name"
-          onChange={(e) => handleChange(e)}
-        />
-        {formErrors && formErrors.uname && (
-          <span className="error">{formErrors.uname}</span>
-        )}
-        <br />
         <Form.Input
           fluid
           label="Email address *"

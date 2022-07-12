@@ -15,7 +15,7 @@ const CreateHazard = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [searchedLocation, setSearchedLocation] = useState('');
+  const [searchedLocation, setSearchedLocation] = useState("");
 
   const [formErrors, setFormErrors] = useState({
     hazardRemoveDT: "",
@@ -33,8 +33,16 @@ const CreateHazard = () => {
   const handleTimeInfoChange = (e, { name, value }) =>
     setTimeInfo({ ...timeInfo, [name]: value });
 
+  const getActiveUserEmail = () => {
+    let email = "undefined";
+    let activeUser = getActiveUser();
+    if (activeUser) {
+      email = activeUser.email;
+    }
+    return email;
+  };
+
   const [formInfo, setFormInfo] = useState({
-    // username: "", // need to take from logged-in user info
     hazardType: "",
     hazardSubType: "",
     hazardDetails: "",
@@ -48,8 +56,9 @@ const CreateHazard = () => {
     anonymousReport: false,
     //hazardId: "",
   });
+
   const handleTimeFormInfoChange = (e, { name, value }) => {
-    console.log(formErrors)
+    console.log(formErrors);
     let currentFormErrors = formErrors;
     switch (name) {
       case "hazardRemoveDT":
@@ -65,12 +74,12 @@ const CreateHazard = () => {
           const yaerAndTime = splitDateTime[2].split(" ");
           valueTime = new Date(
             yaerAndTime[0] +
-            "-" +
-            splitDateTime[1] +
-            "-" +
-            splitDateTime[0] +
-            "T" +
-            yaerAndTime[1]
+              "-" +
+              splitDateTime[1] +
+              "-" +
+              splitDateTime[0] +
+              "T" +
+              yaerAndTime[1]
           );
         } else {
           valueTime = new Date(value);
@@ -89,20 +98,20 @@ const CreateHazard = () => {
     }
     setFormErrors(currentFormErrors);
     setFormInfo({ ...formInfo, [name]: valueTime });
-  }
+  };
 
   const handleSearchedLocationChange = (value) => {
-    console.log('formInfo', formInfo);
+    console.log("formInfo", formInfo);
     setFormInfo({ ...formInfo, hazardLocation: value });
     // console.log('formInfo', formInfo);
-    console.log('value', value);
-    console.log('formInfo', formInfo);
-  }
+    console.log("value", value);
+    console.log("formInfo", formInfo);
+  };
 
   const handleFormInfoChange = (e, { name, value }) => {
     setFormInfo({ ...formInfo, [name]: value });
-    console.log('formInfo', formInfo);
-  }
+    console.log("formInfo", formInfo);
+  };
 
   const handleCheckedChange = (e, { name, value }) => {
     setFormInfo({ ...formInfo, [name]: !value });
@@ -122,7 +131,7 @@ const CreateHazard = () => {
 
     const data = new FormData();
 
-    data.append("userEmail", getActiveUser().email);
+    data.append("userEmail", getActiveUserEmail());
     data.append("type", formInfo.hazardType);
     data.append("subType", formInfo.hazardSubType);
     data.append("details", formInfo.hazardDetails);
@@ -154,14 +163,24 @@ const CreateHazard = () => {
   };
 
   const user = getActiveUser();
-  if(!user){
-    return <center><Link to="/log-in"><h1>Please log in before reporting hazards</h1></Link></center>
+  if (!user) {
+    return (
+      <center>
+        <Link to="/log-in">
+          <h1>Please log in before reporting hazards</h1>
+        </Link>
+      </center>
+    );
   }
 
   return (
     <div className="create-hazard">
-      <Map className='map' type='createHazard' handleSearchedLocationChange={handleSearchedLocationChange} />
-      <Form className='form'>
+      <Map
+        className="map"
+        type="createHazard"
+        handleSearchedLocationChange={handleSearchedLocationChange}
+      />
+      <Form className="form">
         <Divider horizontal>*</Divider>
         <Form.Group widths="equal">
           <Form.Select
