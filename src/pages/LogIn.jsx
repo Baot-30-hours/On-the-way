@@ -59,6 +59,8 @@ export const LogIn = () => {
     console.log("Encoded JWT ID token: " + response.credential);
     const userObject = jwtDecode(response.credential)
     console.log(userObject);
+    setUserInSession({userObject});
+    navigate("/");
   }
 
   useEffect(() => {

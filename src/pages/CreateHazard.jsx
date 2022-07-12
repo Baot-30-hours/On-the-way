@@ -7,7 +7,7 @@ import LoadingSpinner from "./LoadingSpinner";
 // import "../css/LogIn.css";
 import "../css/CreateHazard.css";
 import Map from "./GoogleMap";
-import { getActiveUser } from "../GlobalFunctions.js";
+import { getActiveUser, getActiveUserEmail } from "../GlobalFunctions.js";
 // import { getUserFromSession } from "./App.jsx";
 
 const CreateHazard = () => {
@@ -122,7 +122,7 @@ const CreateHazard = () => {
 
     const data = new FormData();
 
-    data.append("userEmail", getActiveUser().email);
+    data.append("userEmail", getActiveUserEmail());
     data.append("type", formInfo.hazardType);
     data.append("subType", formInfo.hazardSubType);
     data.append("details", formInfo.hazardDetails);
