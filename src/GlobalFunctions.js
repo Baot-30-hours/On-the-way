@@ -27,42 +27,42 @@ export const getLocationDisplayName = (location) => {
 };
 
 export const getActiveUser = () => {
-  return JSON.parse(sessionStorage.getItem('user'));
+  return JSON.parse(sessionStorage.getItem("user"));
 };
 
 export const setUserInSession = (user) => {
-  sessionStorage.setItem('user', JSON.stringify(user));
+  sessionStorage.setItem("user", JSON.stringify(user));
 };
 
 export const getActiveUserName = () => {
   const activeUser = getActiveUser();
-  let username = 'guest';
-  if(activeUser){
-    if(activeUser.userObject){ // google
+  let username = "Guest";
+  if (activeUser) {
+    if (activeUser.userObject) {
+      // google
       username = activeUser.userObject.given_name;
-    }
-    else{
+    } else {
       username = activeUser?.firstName;
     }
   }
-  return username
+  return username;
 };
 
 export const getActiveUserEmail = () => {
   const activeUser = getActiveUser();
   let userEmail;
-  if(activeUser?.userObject){ // google
+  if (activeUser?.userObject) {
+    // google
     userEmail = activeUser.userObject.email;
-  }
-  else{
+  } else {
     userEmail = activeUser?.email;
   }
-  return userEmail
+  return userEmail;
 };
 
 export const isGoogleActiveUser = () => {
   const user = getActiveUser();
-  if(user.userObject){
+  if (user.userObject) {
     return true;
   }
   return false;
