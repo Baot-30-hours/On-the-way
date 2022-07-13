@@ -196,10 +196,12 @@ const HazardDetails = () => {
             <Item.Group divided>
               <Item key={formInfo.hazard._id}>
                 <Item.Content>
-                  <Item.Header style={{ color: "green" }}>
+                  <Item.Header
+                    style={{ color: "green", paddingBottom: 20, fontSize: 25 }}
+                  >
                     {formInfo.hazard.details}
                   </Item.Header>
-                  <Item.Meta>
+                  <Item.Meta style={{ paddingBottom: 20, fontSize: 20 }}>
                     <span>
                       {
                         /* Consts.HazardTypes.find(
@@ -220,17 +222,17 @@ const HazardDetails = () => {
                       </span>
                     )}
                   </Item.Meta>
-                  <Item.Description>
+                  <Item.Description style={{ paddingBottom: 5, fontSize: 15 }}>
                     <b>When: </b>
                     &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {Moment(formInfo.hazard.dt).format("DD/MM/YY HH:mm")}
                   </Item.Description>
-                  <Item.Description>
+                  <Item.Description style={{ paddingBottom: 5, fontSize: 15 }}>
                     <b>Published:</b>
                     &emsp;&emsp;&emsp;&emsp;&nbsp;
                     {Moment(formInfo.hazard.publishDT).format("DD/MM/YY HH:mm")}
                   </Item.Description>
-                  <Item.Description>
+                  <Item.Description style={{ paddingBottom: 5, fontSize: 15 }}>
                     <b>Published By:</b>
                     &emsp;&emsp;&emsp;
                     {formInfo.hazard.anonymousReport === "true" && (
@@ -244,10 +246,12 @@ const HazardDetails = () => {
                     )}
                   </Item.Description>
                   {formInfo.hazard.anonymousReport !== "true" && (
-                    <Item.Description>
+                    <Item.Description
+                      style={{ paddingBottom: 100, fontSize: 15 }}
+                    >
                       <table>
                         <tr>
-                          <td valign="top" width="122px;">
+                          <td valign="top" width="175px;">
                             <b>Contact Details:</b>
                           </td>
                           <td>
@@ -259,7 +263,7 @@ const HazardDetails = () => {
                     </Item.Description>
                   )}
                   {formInfo.hazard.notifyMunicipality === "true" && (
-                    <Item.Meta>
+                    <Item.Meta style={{ paddingBottom: 10, fontSize: 15 }}>
                       <span>
                         <b>
                           <i>* Notified local municipality </i>
@@ -272,9 +276,9 @@ const HazardDetails = () => {
             </Item.Group>
           </Grid.Column>
           <Grid.Column>
-            <Item.Extra style={{ width: 800 }}>
+            <Item.Extra style={{ fontSize: 15, width: 800 }}>
               <Icon name="map marker alternate" />
-              <b>{formInfo.hazard.location}</b>
+              {formInfo.hazard.location}
             </Item.Extra>
             <Map
               detailsLocation={formInfo.hazard.location}
@@ -298,12 +302,13 @@ const HazardDetails = () => {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          <Grid.Column>
+          <Grid.Column style={{ textAlign: "left" }}>
             <Button
               content="Back To List"
               color="green"
               icon="left arrow"
               onClick={() => navigate("/hazardlist")}
+              style={{ fontSize: 15 }}
             ></Button>
           </Grid.Column>
         </Grid.Row>
