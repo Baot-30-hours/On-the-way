@@ -121,12 +121,12 @@ const HazardList = () => {
     //   accessor: "locationText",
     // },
     {
-      Header: "Publish Date time",
-      accessor: "publishDT",
+      Header: "Hazard Date",
+      accessor: "dt",
     },
     {
-      Header: "Data time",
-      accessor: "dt",
+      Header: "Publish Date",
+      accessor: "publishDT",
     },
     {
       Header: "Image",
