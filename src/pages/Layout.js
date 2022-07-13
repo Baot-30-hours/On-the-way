@@ -14,7 +14,7 @@ const Layout = () => {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/createhazard">Report Hazard</Link></li>
           <li><Link to="/hazardlist">Hazard List</Link></li>
-          <li><div>{`Hello ${getActiveUserName()}`}</div></li>
+          <li><div><b><i>{`Hello ${getActiveUserName()}!`}</i></b></div></li>
         </ul>
       </nav>
       <Outlet />
