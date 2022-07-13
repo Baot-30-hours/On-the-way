@@ -251,7 +251,7 @@ const HazardDetails = () => {
                     >
                       <table>
                         <tr>
-                          <td valign="top" width="175px;">
+                          <td valign="top" width="131px;">
                             <b>Contact Details:</b>
                           </td>
                           <td>
