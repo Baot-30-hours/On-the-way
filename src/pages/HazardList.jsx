@@ -54,10 +54,8 @@ const HazardList = () => {
             ).text,
             subType: getSubTypeDisplayName(parsed[i].type, parsed[i].subType),
             details: parsed[i].details,
-            location: Consts.Locations.find(
-              (hazard) => hazard.value === parsed[i].location
-            )?.text,
-            locationText: parsed[i].locationText,
+            location: parsed[i].location,
+            //locationText: parsed[i].locationText,
             publishDT: Moment(parsed[i].publishDT).format("DD/MM/YY HH:mm"),
             dt: Moment(parsed[i].dt).format("DD/MM/YY HH:mm"),
             image: parsed[i].file1 ? (
@@ -113,20 +111,20 @@ const HazardList = () => {
     {
       Header: "Location",
       accessor: "location",
-      Filter: ({ filter, onChange }) =>
-        customFilter({ fieldName: "location", filter, onChange }),
+      /* Filter: ({ filter, onChange }) =>
+        customFilter({ fieldName: "location", filter, onChange }), */
     },
     // {
     //   Header: "Location text",
     //   accessor: "locationText",
     // },
     {
-      Header: "Publish Date time",
-      accessor: "publishDT",
+      Header: "Hazard Date",
+      accessor: "dt",
     },
     {
-      Header: "Data time",
-      accessor: "dt",
+      Header: "Publish Date",
+      accessor: "publishDT",
     },
     {
       Header: "Image",
