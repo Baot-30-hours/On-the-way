@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { setUserInSession } from '../GlobalFunctions';
 
 
-export const LogIn = () => {
+export const LogIn = ({setUser}) => {
   const [userInfo, setUserInfo] = useState({ email: '', password: '' });
   const [disable, setDisable] = useState(true);
   const navigate = useNavigate();
@@ -47,6 +47,7 @@ export const LogIn = () => {
         console.log(`user ${user.user.email} exist in the db!`);
         setUserInSession(user.user);
         setDisable(true);
+        setUser(user.user.firstName)
         navigate("/");
       }
     }
