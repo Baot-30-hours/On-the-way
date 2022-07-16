@@ -16,19 +16,18 @@ export default function App() {
 
   // Google Maps Platform API Key
   // AIzaSyBtUSAW7ssnBNngTj4Q7X076cyRoCHtd94
+
+  const [user,setUser] = useState('guest')
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<Layout/>}>
+          <Route path="/" element={<Layout user={user}/>}>
           <Route index element={<Home />} />
           <Route path="createhazard" element={<CreateHazard />} />
           <Route path="hazardlist" element={<HazardList />} />
           <Route path="hazarddetails" element={<HazardDetails />} />
           <Route path="register" element={<CreateUser />} />
-          {/* <Route path="log-in" element={<LogIn setToken={setToken}/>} /> */}
-          <Route path="log-in" element={<LogIn/>} />
-          {/* <Route path="backendtest" element={<BackendTest />} /> */}
-          {/* <Route path="newsboard" element={<FetchData />} /> */}
+          <Route path="log-in" element={<LogIn setUser={setUser}/>} />
         </Route>
       </Routes>
     </BrowserRouter>

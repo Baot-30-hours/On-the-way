@@ -1,9 +1,8 @@
 import { Outlet, Link } from "react-router-dom";
 import React from 'react';
 import '../css/Layout.css';
-import { getActiveUserName } from "../GlobalFunctions";
 
-const Layout = () => {
+const Layout = ({user}) => {
 
   return (
     <>
@@ -14,7 +13,7 @@ const Layout = () => {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/createhazard">Report Hazard</Link></li>
           <li><Link to="/hazardlist">Hazard List</Link></li>
-          <li><div><b><i>{`Hello ${getActiveUserName()}!`}</i></b></div></li>
+          <li><div>{`Hello ${user}`}</div></li>
         </ul>
       </nav>
       <Outlet />
