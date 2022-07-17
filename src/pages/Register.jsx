@@ -273,7 +273,7 @@ const FormCreateUser = () => {
         <br />
         {/* זהה לסיסמא שמעל */}
         <Form.Input
-          label="Reapet password *"
+          label="Repeat password *"
           name="repeatPassword"
           id="repeatPassword"
           type="password"

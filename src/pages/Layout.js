@@ -66,7 +66,7 @@ const Layout = ({user}) => {
           <IconButton onClick={<Link to="/userprofile">User Profile</Link>} >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
-          <Link to="/userprofile">User Profile</Link>
+          <NavLink to="/userprofile">{`Hello ${user}`}</NavLink>
             </li>
         </ul>
       </nav>
