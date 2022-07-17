@@ -10,6 +10,7 @@ const Layout = ({user}) => {
     <>
       <nav>
         <ul>
+          <li><img src="OnTheWayLogo.jpeg" className="logo-img"/></li>
           <li>
             <NavLink style={({ isActive }) => {
               return {
@@ -55,12 +56,12 @@ const Layout = ({user}) => {
               };
             }} to="/hazardlist"><b>Hazard List</b></NavLink>
           </li>
-          <li>
+          {/* <li>
             <h3 style={{
                 display: "block",
                 margin: "1rem 0"
               }}>{`Hello ${user}`}</h3>
-          </li>
+          </li> */}
           <li>
           <IconButton onClick={<Link to="/userprofile">User Profile</Link>} >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
