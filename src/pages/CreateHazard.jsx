@@ -33,15 +33,6 @@ const CreateHazard = () => {
   const handleTimeInfoChange = (e, { name, value }) =>
     setTimeInfo({ ...timeInfo, [name]: value });
 
-  const getActiveUserEmail = () => {
-    let email = "undefined";
-    let activeUser = getActiveUser();
-    if (activeUser) {
-      email = activeUser.email;
-    }
-    return email;
-  };
-
   const [formInfo, setFormInfo] = useState({
     hazardType: "",
     hazardSubType: "",

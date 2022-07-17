@@ -67,11 +67,11 @@ export const LogIn = ({setUser}) => {
 
   useEffect(() => {
     /* global google */
-    google.accounts.id.initialize({
+    google.accounts?.id.initialize({
       client_id: "316960033546-4pnd0l53bbrj3u8qq3q9hpcn530dt96e.apps.googleusercontent.com",
       callback: handleCallbackResponse
     })
-    google.accounts.id.renderButton(
+    google.accounts?.id.renderButton(
       document.querySelector(".google"),
       {
         // 'scope': 'profile email',
