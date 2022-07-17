@@ -61,6 +61,7 @@ export const LogIn = ({setUser}) => {
     const userObject = jwtDecode(response.credential)
     console.log(userObject);
     setUserInSession({userObject});
+    setUser(userObject.given_name)
     navigate("/");
   }
 
