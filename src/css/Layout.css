@@ -12,6 +12,6 @@ ul {
 
 li {}
 
-nav a {
-  color: rgba(0, 0, 0, .87) !important;
+b {
+  font-size: large;
 }

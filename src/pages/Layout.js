@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import React from 'react';
 import '../css/Layout.css';
 
@@ -8,12 +8,57 @@ const Layout = ({user}) => {
     <>
       <nav>
         <ul>
-          <li><Link to="/register">Sign up</Link></li>
-          <li><Link to="/log-in" state={{ from: "occupation" }}>Log In</Link></li>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/createhazard">Report Hazard</Link></li>
-          <li><Link to="/hazardlist">Hazard List</Link></li>
-          <li><div>{`Hello ${user}`}</div></li>
+          <li>
+            <NavLink style={({ isActive }) => {
+              return {
+                display: "block",
+                margin: "1rem 0",
+                color: isActive ? "green" : "black",
+              };
+            }} to="/register"><b>Sign up</b></NavLink>
+          </li>
+          <li>
+            <NavLink style={({ isActive }) => {
+              return {
+                display: "block",
+                margin: "1rem 0",
+                color: isActive ? "green" : "black",
+              };
+            }} to="/log-in"><b>Log In</b></NavLink>
+          </li>
+          <li>
+            <NavLink style={({ isActive }) => {
+              return {
+                display: "block",
+                margin: "1rem 0",
+                color: isActive ? "green" : "black",
+              };
+            }} to="/"><b>Home</b></NavLink>
+          </li>
+          <li>
+            <NavLink style={({ isActive }) => {
+              return {
+                display: "block",
+                margin: "1rem 0",
+                color: isActive ? "green" : "black",
+              };
+            }} to="/createhazard"><b>Report Hazard</b></NavLink>
+          </li>
+          <li>
+            <NavLink style={({ isActive }) => {
+              return {
+                display: "block",
+                margin: "1rem 0",
+                color: isActive ? "green" : "black",
+              };
+            }} to="/hazardlist"><b>Hazard List</b></NavLink>
+          </li>
+          <li>
+            <h3 style={{
+                display: "block",
+                margin: "1rem 0"
+              }}>{`Hello ${user}`}</h3>
+          </li>
         </ul>
       </nav>
       <Outlet />
