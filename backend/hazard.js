@@ -106,9 +106,11 @@ async function getHazards(req, res) {
           .collection("users")
           .findOne({ email: hazard.userEmail });
 
-        hazard.firstName = user.firstName;
-        hazard.lastName = user.lastName;
-        hazard.phone = user.phone;
+        if(user){
+          hazard.firstName = user.firstName;
+          hazard.lastName = user.lastName;
+          hazard.phone = user.phone;
+        }
       }
 
       res.send({ hazards: JSON.stringify(hazard) });
