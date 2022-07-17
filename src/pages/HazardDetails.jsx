@@ -224,17 +224,17 @@ const HazardDetails = () => {
                   </Item.Meta>
                   <Item.Description style={{ paddingBottom: 5, fontSize: 15 }}>
                     <b>When: </b>
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {Moment(formInfo.hazard.dt).format("DD/MM/YY HH:mm")}
                   </Item.Description>
                   <Item.Description style={{ paddingBottom: 5, fontSize: 15 }}>
                     <b>Published:</b>
-                    &emsp;&emsp;&emsp;&emsp;&nbsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;
                     {Moment(formInfo.hazard.publishDT).format("DD/MM/YY HH:mm")}
                   </Item.Description>
                   <Item.Description style={{ paddingBottom: 5, fontSize: 15 }}>
                     <b>Published By:</b>
-                    &emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&nbsp;&nbsp;
                     {formInfo.hazard.anonymousReport === "true" && (
                       <span>Anonymous</span>
                     )}
@@ -247,11 +247,11 @@ const HazardDetails = () => {
                   </Item.Description>
                   {formInfo.hazard.anonymousReport !== "true" && (
                     <Item.Description
-                      style={{ paddingBottom: 100, fontSize: 15 }}
+                      style={{ fontSize: 15 }}
                     >
                       <table>
                         <tr>
-                          <td valign="top" width="131px;">
+                          <td valign="top" width="157px;">
                             <b>Contact Details:</b>
                           </td>
                           <td>
@@ -263,7 +263,7 @@ const HazardDetails = () => {
                     </Item.Description>
                   )}
                   {formInfo.hazard.notifyMunicipality === "true" && (
-                    <Item.Meta style={{ paddingBottom: 10, fontSize: 15 }}>
+                    <Item.Meta style={{ paddingTop: 20, fontSize: 15 }}>
                       <span>
                         <b>
                           <i>* Notified local municipality </i>
