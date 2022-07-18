@@ -11,7 +11,9 @@ import BackendTest from "./BackendTest";
 import LogIn from "./LogIn";
 import FetchData from "./NewBoard";
 import HazardDetails from "./HazardDetails";
-import UserProfile from "../components/UserProfile"
+import UserProfile from "./UserProfile"
+import { getActiveUser } from "../GlobalFunctions";
+import {getProfile} from "./UserProfile";
 
 export default function App() {
 
@@ -30,7 +32,7 @@ export default function App() {
           <Route path="register" element={<CreateUser />} />
           <Route path="log-in" element={<LogIn setUser={setUser}/>} />
           <Route path="newsboard" element={<FetchData />} />
-          <Route path="userprofile" element={<UserProfile />}/>
+          <Route path="userprofile" element={<UserProfile/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

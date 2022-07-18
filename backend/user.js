@@ -5,6 +5,7 @@ nconf.file({ file: "./config.json" });
 var MongoClient = require("mongodb").MongoClient;
 var mongodb_url = nconf.get("mongodb_url");
 var db_name = nconf.get("db_name");
+var express = require("express");
 
 module.exports = function (app) {
   app.get("/api/getusers", (req, res) => {
@@ -20,6 +21,7 @@ module.exports = function (app) {
   });
 
   app.post("/api/adduser", (req, res) => {
+    // return res.send(200, { response: 'response 1' });
     createUser(req.body, res);
   });
 
@@ -33,6 +35,13 @@ module.exports = function (app) {
     var userEmail = req.body.userEmail;
     findOneUserByEmail(userEmail, res);
   });
+
+  app.post("/api/update", (req, res) => {
+    updateUser(req, res);
+    res.sendStatus(200);
+  });
+    
+
 
   async function createUser(newUser, res) {
     console.log("newUser: " + newUser);
@@ -139,4 +148,59 @@ module.exports = function (app) {
         });
     });
   }
+
+  function updateUser(req, res) {
+    var user = req.body;
+    MongoClient.connect(mongodb_url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db(db_name);
+
+      dbo
+        .collection("users")
+        .updateOne(
+          { email: user.originalEmail },
+          { $set: { firstName: user.firstName, lastName: user.lastName, email: user.email, } }, //, imageURl: user.imageURl
+          function (err, result) {
+            if (err) throw err;
+            if (result) {
+              res.send({ user: result });
+            } else {
+              res.send(null);
+            }
+            db.close();
+          }
+        );
+    });
+  };
+
+  function updateImage(req, res) {
+    const multer = require("multer");
+    app.use(
+      "/public/uploaded",
+      express.static(__dirname + "/public/uploaded/")
+    );
+    var now = Date.now();
+    const storage = multer.diskStorage({
+      destination: "./public/uploaded",
+      filename: function (req, file, cb) {
+        var name = now + "-" + file.originalname;
+        cb(null, name);
+      },
+    });
+    const upload = multer({ storage: storage }).array("file");
+    upload(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        console.log("multer upload error");
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        console.log("multer unknown error");
+      }
+    });
+  };
+
+
+
+
+   
 };

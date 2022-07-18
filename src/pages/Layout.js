@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 
 const Layout = ({user}) => {
-
+  const maybe_disabled = user != 'guest' ? '' : 'disabled';
   return (
     <>
       <nav>
@@ -56,17 +56,13 @@ const Layout = ({user}) => {
               };
             }} to="/hazardlist"><b>Hazard List</b></NavLink>
           </li>
-          {/* <li>
-            <h3 style={{
-                display: "block",
-                margin: "1rem 0"
-              }}>{`Hello ${user}`}</h3>
-          </li> */}
           <li>
-          <IconButton onClick={<Link to="/userprofile">User Profile</Link>} >
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <IconButton onClick={<Link to="/userprofile"></Link>} >
+                <Avatar alt={`${user}`} src="/static/images/avatar/2.jpg" />
               </IconButton>
-          <NavLink to="/userprofile">{`Hello ${user}`}</NavLink>
+              { user === 'guest' ?  `hello ${user}` : 
+             <NavLink to="/userprofile" >{`hello ${user}`}</NavLink>}
+          {/* <NavLink to="/userprofile" maybe_disabled >{`Hello ${user}`}</NavLink> */}
             </li>
         </ul>
       </nav>
