@@ -47,7 +47,7 @@ const HazardList = () => {
           data.push({
             userEmail:
               parsed[i].anonymousReport === "true"
-                ? "Anomymous"
+                ? "Anonymous"
                 : parsed[i].userEmail,
             type: Consts.HazardTypes.find(
               (hazard) => hazard.value === parsed[i].type
@@ -63,6 +63,8 @@ const HazardList = () => {
                 src={images_url + parsed[i].file1}
                 height="100"
                 object-fit="cover"
+                circular
+                centered
               ></Image>
             ) : (
               "<<no image>>"
@@ -87,10 +89,6 @@ const HazardList = () => {
   }
 
   const columns = [
-    {
-      Header: "User Email",
-      accessor: "userEmail",
-    },
     {
       Header: "Type",
       accessor: "type",
@@ -125,6 +123,10 @@ const HazardList = () => {
     {
       Header: "Publish Date",
       accessor: "publishDT",
+    },
+    {
+      Header: "Published By",
+      accessor: "userEmail",
     },
     {
       Header: "Image",
