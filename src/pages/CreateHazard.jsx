@@ -255,7 +255,7 @@ const CreateHazard = () => {
         <Divider horizontal>*</Divider>
         <Form.Input
           type="file"
-          label="Upload up to 5 images/videos:"
+          label="Upload up to 4 images/videos:"
           name="hazardFiles"
           accept="image/*,.mp4"
           multiple
@@ -417,7 +417,7 @@ const CreateHazard = () => {
               formErrors.hazardRemoveDT ||
               formErrors.hazardPublishDT ||
               (formInfo.hazardType !== "other" && !formInfo.hazardSubType) ||
-              (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 5)
+              (formInfo.hazardFiles !== null && formInfo.hazardFiles.length > 4)
             }
             onClick={handleSubmit}
           >

@@ -45,7 +45,7 @@ const HazardDetails = () => {
   columns.push({ accessor: "file2" });
   columns.push({ accessor: "file3" });
   columns.push({ accessor: "file4" });
-  columns.push({ accessor: "file5" });
+  //columns.push({ accessor: "file5" });
 
   const files = [
     {
@@ -71,6 +71,8 @@ const HazardDetails = () => {
             src={images_url + formInfo.hazard.file1}
             height="200"
             object-fit="cover"
+            rounded
+            centered
           ></Image>
         )
       ) : (
@@ -98,6 +100,8 @@ const HazardDetails = () => {
             src={images_url + formInfo.hazard.file2}
             height="200"
             object-fit="cover"
+            rounded
+            centered
           ></Image>
         )
       ) : (
@@ -125,6 +129,8 @@ const HazardDetails = () => {
             src={images_url + formInfo.hazard.file3}
             height="200"
             object-fit="cover"
+            rounded
+            centered
           ></Image>
         )
       ) : (
@@ -152,6 +158,8 @@ const HazardDetails = () => {
             src={images_url + formInfo.hazard.file4}
             height="200"
             object-fit="cover"
+            rounded
+            centered
           ></Image>
         )
       ) : (
@@ -180,6 +188,8 @@ const HazardDetails = () => {
             src={images_url + formInfo.hazard.file5}
             height="200"
             object-fit="cover"
+            rounded
+            centered
           ></Image>
         )
       ) : (
@@ -190,7 +200,7 @@ const HazardDetails = () => {
 
   return (
     <div>
-      <Grid style={{ paddingLeft: 30, overflow: "auto" }}>
+      <Grid style={{ paddingLeft: 30, width: 1470 }}>
         <Grid.Row>
           <Grid.Column style={{ width: 600 }}>
             <Item.Group divided>
@@ -246,9 +256,7 @@ const HazardDetails = () => {
                     )}
                   </Item.Description>
                   {formInfo.hazard.anonymousReport !== "true" && (
-                    <Item.Description
-                      style={{ fontSize: 15 }}
-                    >
+                    <Item.Description style={{ fontSize: 15 }}>
                       <table>
                         <tr>
                           <td valign="top" width="157px;">
@@ -286,16 +294,23 @@ const HazardDetails = () => {
             />
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row style={{ align: "left" }}>
-          <Grid.Column style={{ width: 800 }}>
+        <Grid.Row
+          style={{
+            align: "left",
+            borderWidth: 2,
+            borderStyle: "solid",
+            borderColor: "green",
+          }}
+        >
+          <Grid.Column style={{ width: 1600 }}>
             <Item.Extra>
-              <div style={{ width: 1300, overflow: "auto" }}>
+              <div style={{ width: 1400, overflow: "none" }}>
                 <ReactTable
                   showPagination={false}
                   defaultPageSize={1}
                   columns={columns}
                   data={files}
-                  style={{ width: 1050, borderWidth: 2 }}
+                  style={{ width: 1410 }}
                 ></ReactTable>
               </div>
             </Item.Extra>
