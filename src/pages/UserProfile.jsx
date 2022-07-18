@@ -3,7 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import {React, useState, useNavigate} from 'react';
 import "../css/UserProfille.css";
 import { Form, Divider, Button } from "semantic-ui-react";
-import {getActiveUser} from "../GlobalFunctions"
+import {getActiveUser, setUserInSession} from "../GlobalFunctions"
 import { columns } from "./hazardsColumnsList";
 
 
@@ -13,27 +13,34 @@ export const UserProfile = () => {
     firstName: "",
     lastName: "",
     email: "",
+    imageUrl: "/static/images/avatar/2.jpg",
   });
 
   const handleUpdate = (e, { name, value }) =>
       UpdateUserInfo({ ...userUpdatesInfo, [name]: value });
 
-  const changeProfileImage = (event) => {
-    user.setState({ uploadedFile: event.target.files[0] });
+  // const changeProfileImage = (event) => {
+  //   user.setState({ uploadedFile: event.target.files[0] });
+  // };
+
+  const changeProfileImage = (e) => {
+    UpdateUserInfo.imageUrl = e;
   };
+  const data = new FormData();
+  data.append("ProfileImage", userUpdatesInfo.ProfileImage);
+  data.append("originalEmail", user.email);
+  data.append("firstName", userUpdatesInfo.firstName);
+  data.append("lastName", userUpdatesInfo.lastName);
+  data.append("email", userUpdatesInfo.email);
 
   const handleUpdateProfile = async (e) => {
+    setUserInSession(userUpdatesInfo.firstName);
     const response = await fetch("/api/update", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        originalEmail: user.email,
-        firstName: userUpdatesInfo.firstName,
-        lastName: userUpdatesInfo.lastName,
-        email: userUpdatesInfo.email,
-      }),
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      body: data
     });
     const body = await response.text();
     console.log(body);
@@ -41,16 +48,16 @@ export const UserProfile = () => {
 
     return (
       <div className="log-in">
-        "User Profile": {user && user.firstName },
         <Form >
         <Divider horizontal>*</Divider>
         <h1>User Profile</h1>
-        <Divider horizontal>*</Divider>
-        <Form.Group widths="equal">
         <Avatar
             alt={user.firstName}
-            src="/static/images/avatar/2.jpg"
+            src={userUpdatesInfo?.imageUrl} //user.imageUrl : "/static/images/avatar/2.jpg"}
+            onChange={(e, {name, value}) => changeProfileImage(value)}
           />
+        <Divider horizontal>*</Divider>
+        <Form.Group widths="equal">
         </Form.Group>
         <Form.Group widths="equal">
           <Form.Input
@@ -85,12 +92,16 @@ export const UserProfile = () => {
           />
         <Divider horizontal>*</Divider>
         <Form.Input
-          type="file"
-          label="Upload your profile picture"
-          name="hazardFiles"
-          accept=".jpg"
-          onChange={(e) => changeProfileImage(e)}
-        />
+            fluid
+            label='image url'
+            name='imageUrl'
+            id='imageUrl'
+            type='text'
+            placeholder="https://placekitten.com/200/300"
+            onChange={(e, { name, value }) =>
+            handleUpdate(e, { name, value })
+          }
+          />
         <Divider horizontal>*</Divider>
         <Button 
         fluid

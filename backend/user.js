@@ -38,9 +38,10 @@ module.exports = function (app) {
 
   app.post("/api/update", (req, res) => {
     updateUser(req, res);
+    // uploadImage(app,req, res);
     res.sendStatus(200);
   });
-    
+
 
 
   async function createUser(newUser, res) {
@@ -159,7 +160,12 @@ module.exports = function (app) {
         .collection("users")
         .updateOne(
           { email: user.originalEmail },
-          { $set: { firstName: user.firstName, lastName: user.lastName, email: user.email, } }, //, imageURl: user.imageURl
+          { $set: { 
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            imageUrl: user.imageUrl
+          } }, //, 
           function (err, result) {
             if (err) throw err;
             if (result) {
@@ -198,9 +204,4 @@ module.exports = function (app) {
       }
     });
   };
-
-
-
-
-   
 };
